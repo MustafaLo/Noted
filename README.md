@@ -1,2 +1,2 @@
 # Noted
-Notion Notes for Developers
+Notion Notes for Developers Written in Go
