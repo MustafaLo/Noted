@@ -6,35 +6,54 @@ package cmd
 
 import (
 	"fmt"
-
 	"github.com/spf13/cobra"
+	"runtime"
+	"path/filepath"
+	"os"
 )
+
+
+func getCurrentFileName()(string){
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok{
+		panic("Failed to get current file")
+	}
+	basefilename := filepath.Base(filename)
+	return basefilename
+}
+
+func getFileContent(filename string)(){
+	content, err := os.ReadFile(filename)
+	if err != nil{
+		panic("Error!")
+	}
+	fmt.Println(string(content))
+}
+
+
 
 // noteCmd represents the note command
 var noteCmd = &cobra.Command{
-	Use:   "note",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Use:   "note [lines to note on]",
+	Short: "Write notes about your code",
+	Long: `Use the note command to write notes on line ranges of your code.
+	You must use the --lines flag and specify the range of your code block to 
+	comment on. The CLI will automatically detect your current workding directory
+	and file`,
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	//Use the Flag StringVarP command to directly insert line range into variable
+	//as opposed to parsing through the argument string array. Cobra will automatically
+	//handle flag parsing
+
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("note called")
+		file := getCurrentFileName()
+		getFileContent((file))
+		fmt.Println("Noted!")
 	},
 }
 
+
+
 func init() {
 	rootCmd.AddCommand(noteCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// noteCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// noteCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
