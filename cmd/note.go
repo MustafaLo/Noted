@@ -1,34 +1,35 @@
 /*
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
-	"github.com/spf13/cobra"
-	"runtime"
-	"path/filepath"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
 
-func getCurrentFileName()(string){
-	_, filename, _, ok := runtime.Caller(0)
-	if !ok{
-		panic("Failed to get current file")
+func getCurrentFileMetadata()(map[string]interface{}, error){
+	var metadata map[string]interface{}
+
+	data, err := os.ReadFile("fileMetadata.json")
+	if err != nil{
+		return nil, fmt.Errorf("Failed to open fileMetaData -- make sure to enable File Tracker Extension")
 	}
-	basefilename := filepath.Base(filename)
-	return basefilename
+
+	ok := json.Unmarshal(data, &metadata)
+	if ok != nil{
+		return nil, fmt.Errorf("Failed to parse fileMetaData")
+	}
+
+	return metadata, nil
+
 }
 
-func getFileContent(filename string)(){
-	content, err := os.ReadFile(filename)
-	if err != nil{
-		panic("Error!")
-	}
-	fmt.Println(string(content))
-}
+
 
 
 
@@ -46,9 +47,28 @@ var noteCmd = &cobra.Command{
 	//handle flag parsing
 
 	Run: func(cmd *cobra.Command, args []string) {
-		file := getCurrentFileName()
-		getFileContent((file))
-		fmt.Println("Noted!")
+		activeFileMetaData, err := getCurrentFileMetadata()
+		if err != nil{
+			fmt.Printf("Error %s", err)
+			return
+		}
+		for k, v := range activeFileMetaData{
+
+			if k == "lines" && v != nil{
+				if linesMap, ok := v.(map[string]interface{}); ok {
+					fmt.Printf("key: %s, value: {", k)
+					for lk, lv := range linesMap {
+						fmt.Printf("%s: %0.f,", lk, lv) // Adjust formatting as needed
+					}
+					fmt.Println("}")
+				} else {
+					fmt.Printf("Not okay")
+				}
+			} else{
+				fmt.Printf("key: %s, value: %s\n", k, v)
+			}
+		}
+		
 	},
 }
 

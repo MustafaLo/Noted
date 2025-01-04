@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Set Active File for Noted",       // Name of the task
+      "type": "shell",                           // Type of task: shell command
+      "command": "echo CURRENT_FILE=${file} > .env", // Writes the active file to .env in the root folder
+      "problemMatcher": []                       // No error handling needed
+    }
+  ]
+}
+
+  
