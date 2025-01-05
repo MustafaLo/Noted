@@ -24,9 +24,6 @@ func LoadEnv()(error){
 		return fmt.Errorf("error loading env file: %w", err)
 	}
 
-	if _, exists := data["NOTION_API_KEY"]; !exists{
-		return fmt.Errorf("env file needs authentication key")
-	}
 	envMap = data
 	return nil
 }
@@ -35,6 +32,10 @@ func InitService()(error){
 	//Client is already authenticated
 	if s.Client != nil{
 		return nil
+	}
+
+	if _, exists := envMap["NOTION_API_KEY"]; !exists{
+		return fmt.Errorf("env file needs authentication key")
 	}
 
 	client := notion.NewClient(envMap["NOTION_API_KEY"])
@@ -48,6 +49,10 @@ func IntializeDatabase()(error){
 		if err == nil{
 			return nil
 		}
+	}
+
+	if _, exists := envMap["NOTION_PAGE_ID"]; !exists{
+		return fmt.Errorf("env file needs shared parent page ID")
 	}
 
 	database_params := createDatabaseParams(envMap["NOTION_PAGE_ID"])
