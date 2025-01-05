@@ -21,7 +21,7 @@ func InitService()(*APIService, error){
 	return &APIService{Client: client}, nil
 }
 
-func CreateDatabase(s *APIService)(error){
+func IntializeDatabase(s *APIService)(*notion.Database, error){
 	title := []notion.RichText{
 		{
 			Text: &notion.Text {
@@ -41,6 +41,7 @@ func CreateDatabase(s *APIService)(error){
 	properties := notion.DatabaseProperties{
 		"MyProperty": notion.DatabaseProperty{
 			Type: notion.DBPropTypeTitle,
+			Title: &notion.EmptyMetadata{},
 		},
 	}
 
@@ -56,10 +57,13 @@ func CreateDatabase(s *APIService)(error){
 
 	// Validate the parameters before sending
 	if err := database_params.Validate(); err != nil {
-		return fmt.Errorf("invalid database parameters: %w", err)
+		return nil, fmt.Errorf("invalid database parameters: %w", err)
 	}
 
-	s.Client.CreateDatabase(context.Background(), database_params)
+	database, ok := s.Client.CreateDatabase(context.Background(), database_params)
+	if ok != nil{
+		return nil, fmt.Errorf("unable to validate database parameters: %w", ok)
+	}
 
-	return nil
+	return &database, nil
 }

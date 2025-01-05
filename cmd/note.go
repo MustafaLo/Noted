@@ -4,11 +4,9 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"os"
-
 	"github.com/MustafaLo/Noted/internal"
 	"github.com/spf13/cobra"
 )
@@ -53,17 +51,18 @@ func notionAPITest()(){
 		return
 	}
 
-	page, ok := service.Client.FindPageByID(context.Background(), "172bbbe2-e342-8061-b911-dac8ff678c19")
-	if ok != nil{
-		fmt.Printf("%s", ok)
-	}
-	fmt.Println(page)
-
-	// ok := internal.CreateDatabase(service) 
+	// page, ok := service.Client.FindPageByID(context.Background(), "172bbbe2-e342-8061-b911-dac8ff678c19")
 	// if ok != nil{
 	// 	fmt.Printf("%s", ok)
-	// 	return
 	// }
+	// fmt.Println(page)
+
+	db, ok := internal.IntializeDatabase(service) 
+	if ok != nil{
+		fmt.Printf("%s", ok)
+		return
+	}
+	fmt.Println(db)
 }
 
 
