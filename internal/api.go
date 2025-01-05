@@ -3,7 +3,6 @@ package internal
 import (
 	"context"
 	"fmt"
-	"os"
 	"github.com/dstotijn/go-notion"
 	"github.com/joho/godotenv"
 )
@@ -20,25 +19,29 @@ func InitService()(error){
 		return nil
 	}
 
-	err := godotenv.Load()
+	envMap, err := godotenv.Read()
 	if err != nil{
 		return fmt.Errorf("error loading env file: %w", err)
 	} 
-	client := notion.NewClient(os.Getenv("NOTION_API_KEY"))
+	client := notion.NewClient(envMap["NOTION_API_KEY"])
 	s.Client = client
 	return nil
 }
 
 func IntializeDatabase()(error){
-	databaseID := os.Getenv("NOTION_DATABASE_ID")
-	if databaseID != ""{
+	envMap, err := godotenv.Read()
+	if err != nil{
+		return fmt.Errorf("error loading env file: %w", err)
+	}
+
+	if databaseID, exists := envMap["NOTION_DATABASE_ID"]; exists{
 		_, err := s.Client.FindDatabaseByID(context.Background(), databaseID)
 		if err == nil{
 			return nil
 		}
 	}
 
-	database_params := createDatabaseParams()
+	database_params := createDatabaseParams(envMap["NOTION_PAGE_ID"])
 	if err := database_params.Validate(); err != nil {
 		return fmt.Errorf("invalid database parameters: %w", err)
 	}
@@ -48,13 +51,16 @@ func IntializeDatabase()(error){
 		return fmt.Errorf("unable to validate database parameters: %w", err)
 	}
 
-	os.Setenv("NOTION_DATABASE_ID", database.ID)
+	envMap["NOTION_DATABASE_ID"] = database.ID
+	if err := godotenv.Write(envMap, ".env"); err != nil {
+		return fmt.Errorf("error writing to .env file: %w", err)
+	}
 	return nil
 }
 
-func createDatabaseParams()(notion.CreateDatabaseParams){
+func createDatabaseParams(pageID string)(notion.CreateDatabaseParams){
 	return notion.CreateDatabaseParams{
-		ParentPageID: os.Getenv("NOTION_PAGE_ID"),
+		ParentPageID: pageID,
 		Title: []notion.RichText{
 			{
 				Text: &notion.Text {

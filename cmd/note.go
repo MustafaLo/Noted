@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"github.com/MustafaLo/Noted/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -16,12 +15,12 @@ func getCurrentFileMetadata()(map[string]interface{}, error){
 	var metadata map[string]interface{}
 	data, err := os.ReadFile("fileMetadata.json")
 	if err != nil{
-		return nil, fmt.Errorf("Failed to open fileMetaData -- make sure to enable File Tracker Extension")
+		return nil, fmt.Errorf("failed to open fileMetaData -- make sure to enable File Tracker Extension")
 	}
 
 	ok := json.Unmarshal(data, &metadata)
 	if ok != nil{
-		return nil, fmt.Errorf("Failed to parse fileMetaData")
+		return nil, fmt.Errorf("failed to parse fileMetaData")
 	}
 	return metadata, nil
 }
@@ -44,20 +43,6 @@ func printFileMetaData(data map[string]interface{}){
 	}
 }
 
-func notionAPITest()(){
-
-	// page, ok := service.Client.FindPageByID(context.Background(), "172bbbe2-e342-8061-b911-dac8ff678c19")
-	// if ok != nil{
-	// 	fmt.Printf("%s", ok)
-	// }
-	// fmt.Println(page)
-
-	ok := internal.IntializeDatabase() 
-	if ok != nil{
-		fmt.Printf("%s", ok)
-		return
-	}
-}
 
 
 
@@ -84,10 +69,8 @@ var noteCmd = &cobra.Command{
 			return
 		}
 		printFileMetaData(activeFileMetaData)
-		notionAPITest()
 	},
 }
-
 
 
 func init() {
