@@ -1,11 +1,8 @@
 {
-    "fileName": "main.go",
-    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/main.go",
-    "lines": {
-        "start": 3,
-        "end": 3
-    },
-    "timestamp": "2025-01-04T23:30:23.322Z",
-    "language": "go",
+    "fileName": ".gitignore",
+    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/.gitignore",
+    "lines": null,
+    "timestamp": "2025-01-05T00:05:35.621Z",
+    "language": "ignore",
     "workspace": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted"
 }
