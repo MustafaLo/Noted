@@ -39,7 +39,6 @@ func IntializeDatabase()(error){
 	}
 
 	database_params := createDatabaseParams()
-
 	if err := database_params.Validate(); err != nil {
 		return fmt.Errorf("invalid database parameters: %w", err)
 	}
@@ -91,9 +90,9 @@ func createDatabaseParams()(notion.CreateDatabaseParams){
 				Type: notion.DBPropTypeSelect,
 				Select: &notion.SelectMetadata{
 					Options: []notion.SelectOptions{
-						{Name: "Bug"},
-						{Name: "Feature"},
-						{Name: "Improvement"},
+						{Name: "Bug", Color: "red"},
+						{Name: "Feature", Color: "blue"},
+						{Name: "Improvement", Color: "green"},
 					},
 				},
 			},
