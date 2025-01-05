@@ -45,11 +45,6 @@ func printFileMetaData(data map[string]interface{}){
 }
 
 func notionAPITest()(){
-	service, err := internal.InitService()
-	if err != nil{
-		fmt.Printf("%s", err)
-		return
-	}
 
 	// page, ok := service.Client.FindPageByID(context.Background(), "172bbbe2-e342-8061-b911-dac8ff678c19")
 	// if ok != nil{
@@ -57,12 +52,11 @@ func notionAPITest()(){
 	// }
 	// fmt.Println(page)
 
-	db, ok := internal.IntializeDatabase(service) 
+	ok := internal.IntializeDatabase() 
 	if ok != nil{
 		fmt.Printf("%s", ok)
 		return
 	}
-	fmt.Println(db)
 }
 
 
@@ -73,10 +67,11 @@ func notionAPITest()(){
 var noteCmd = &cobra.Command{
 	Use:   "note [lines to note on]",
 	Short: "Write notes about your code",
-	Long: `Use the note command to write notes on line ranges of your code.
-	You must use the --lines flag and specify the range of your code block to 
+	Long: `Use the note command to write notes on highlighted portions of your code
+	You can also optionally use the --lines flag and specify the range of your code block to 
 	comment on. The CLI will automatically detect your current workding directory
 	and file`,
+
 
 	//Use the Flag StringVarP command to directly insert line range into variable
 	//as opposed to parsing through the argument string array. Cobra will automatically

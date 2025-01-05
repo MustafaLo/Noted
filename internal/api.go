@@ -12,58 +12,92 @@ type APIService struct{
 	Client *notion.Client
 }
 
-func InitService()(*APIService, error){
+var s APIService
+
+func InitService()(error){
+	//Client is already authenticated
+	if s.Client != nil{
+		return nil
+	}
+
 	err := godotenv.Load()
 	if err != nil{
-		return nil, fmt.Errorf("Error loading env file: %w", err)
+		return fmt.Errorf("error loading env file: %w", err)
 	} 
 	client := notion.NewClient(os.Getenv("NOTION_API_KEY"))
-	return &APIService{Client: client}, nil
+	s.Client = client
+	return nil
 }
 
-func IntializeDatabase(s *APIService)(*notion.Database, error){
-	title := []notion.RichText{
-		{
-			Text: &notion.Text {
-				Content: "Noted CLI Database",
+func IntializeDatabase()(error){
+	databaseID := os.Getenv("NOTION_DATABASE_ID")
+	if databaseID != ""{
+		_, err := s.Client.FindDatabaseByID(context.Background(), databaseID)
+		if err == nil{
+			return nil
+		}
+	}
+
+	database_params := createDatabaseParams()
+
+	if err := database_params.Validate(); err != nil {
+		return fmt.Errorf("invalid database parameters: %w", err)
+	}
+
+	database, err := s.Client.CreateDatabase(context.Background(), database_params)
+	if err != nil{
+		return fmt.Errorf("unable to validate database parameters: %w", err)
+	}
+
+	os.Setenv("NOTION_DATABASE_ID", database.ID)
+	return nil
+}
+
+func createDatabaseParams()(notion.CreateDatabaseParams){
+	return notion.CreateDatabaseParams{
+		ParentPageID: os.Getenv("NOTION_PAGE_ID"),
+		Title: []notion.RichText{
+			{
+				Text: &notion.Text {
+					Content: "Noted CLI Database",
+				},
 			},
 		},
-	}
-
-	description := []notion.RichText{
-		{
-			Text: &notion.Text{
-				Content: "Description of Noted CLI Database",
+		Description: []notion.RichText{
+			{
+				Text: &notion.Text{
+					Content: "Database to store notes for your project!",
+				},
 			},
 		},
-	}
-
-	properties := notion.DatabaseProperties{
-		"MyProperty": notion.DatabaseProperty{
-			Type: notion.DBPropTypeTitle,
-			Title: &notion.EmptyMetadata{},
+		Properties: notion.DatabaseProperties{
+			"File Name": notion.DatabaseProperty{
+				Type: notion.DBPropTypeTitle,
+				Title: &notion.EmptyMetadata{},
+			},
+			"Note": notion.DatabaseProperty{
+				Type: notion.DBPropTypeRichText,
+				RichText: &notion.EmptyMetadata{},
+			},
+			"Line Numbers": notion.DatabaseProperty{
+				Type: notion.DBPropTypeRichText,
+				RichText: &notion.EmptyMetadata{},
+			},
+			"Timestamp":notion.DatabaseProperty{
+				Type: notion.DBPropTypeCreatedTime,
+				CreatedTime: &notion.EmptyMetadata{},
+			},
+			"Category":notion.DatabaseProperty{
+				Type: notion.DBPropTypeSelect,
+				Select: &notion.SelectMetadata{
+					Options: []notion.SelectOptions{
+						{Name: "Bug"},
+						{Name: "Feature"},
+						{Name: "Improvement"},
+					},
+				},
+			},
 		},
-	}
-
-	database_params := notion.CreateDatabaseParams{
-		ParentPageID: "172bbbe2-e342-8061-b911-dac8ff678c19",
-		Title: title,
-		Description: description,
-		Properties: properties,
-		Icon: nil,
-		Cover: nil,
 		IsInline: true,
 	}
-
-	// Validate the parameters before sending
-	if err := database_params.Validate(); err != nil {
-		return nil, fmt.Errorf("invalid database parameters: %w", err)
-	}
-
-	database, ok := s.Client.CreateDatabase(context.Background(), database_params)
-	if ok != nil{
-		return nil, fmt.Errorf("unable to validate database parameters: %w", ok)
-	}
-
-	return &database, nil
 }
