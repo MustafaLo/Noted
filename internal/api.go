@@ -24,7 +24,7 @@ func LoadEnv()(error){
 		return fmt.Errorf("error loading env file: %w", err)
 	}
 
-	if _, exists := envMap["NOTION_API_KEY"]; !exists{
+	if _, exists := data["NOTION_API_KEY"]; !exists{
 		return fmt.Errorf("env file needs authentication key")
 	}
 	envMap = data
