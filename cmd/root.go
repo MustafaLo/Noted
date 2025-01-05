@@ -25,6 +25,13 @@ func intialize_db()(error){
 	return nil
 }
 
+func intialize_env()(error){
+	if err := internal.LoadEnv(); err != nil{
+		return fmt.Errorf("Error loading %w", err)
+	}
+	return nil
+}
+
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -38,6 +45,10 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		if err := intialize_env(); err != nil{
+			fmt.Println(err)
+			os.Exit(1)
+		}
 		if err := authenticate(); err != nil{
 			fmt.Println(err)
 			os.Exit(1)

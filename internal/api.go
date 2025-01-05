@@ -12,6 +12,24 @@ type APIService struct{
 }
 
 var s APIService
+var envMap map[string]string
+
+func LoadEnv()(error){
+	if envMap != nil{
+		return nil
+	}
+
+	data, err := godotenv.Read()
+	if err != nil{
+		return fmt.Errorf("error loading env file: %w", err)
+	}
+
+	if _, exists := envMap["NOTION_API_KEY"]; !exists{
+		return fmt.Errorf("env file needs authentication key")
+	}
+	envMap = data
+	return nil
+}
 
 func InitService()(error){
 	//Client is already authenticated
@@ -19,21 +37,12 @@ func InitService()(error){
 		return nil
 	}
 
-	envMap, err := godotenv.Read()
-	if err != nil{
-		return fmt.Errorf("error loading env file: %w", err)
-	} 
 	client := notion.NewClient(envMap["NOTION_API_KEY"])
 	s.Client = client
 	return nil
 }
 
 func IntializeDatabase()(error){
-	envMap, err := godotenv.Read()
-	if err != nil{
-		return fmt.Errorf("error loading env file: %w", err)
-	}
-
 	if databaseID, exists := envMap["NOTION_DATABASE_ID"]; exists{
 		_, err := s.Client.FindDatabaseByID(context.Background(), databaseID)
 		if err == nil{
