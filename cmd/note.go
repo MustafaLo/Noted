@@ -7,6 +7,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/MustafaLo/Noted/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -43,7 +45,8 @@ func printFileMetaData(data map[string]interface{}){
 	}
 }
 
-
+var note string
+var client *internal.APIService
 
 // noteCmd represents the note command
 var noteCmd = &cobra.Command{
@@ -66,12 +69,18 @@ var noteCmd = &cobra.Command{
 			return
 		}
 		printFileMetaData(activeFileMetaData)
-		notion_client := cmd.Context().Value("client")
-		fmt.Println("CLient", notion_client)
+
+
+
+		client = cmd.Context().Value("client").(*internal.APIService)
+		fmt.Println("CLient", client)
+		fmt.Println("Note", note)
 	},
 }
 
 
 func init() {
+	noteCmd.Flags().StringVarP(&note, "message", "m", "", "Message (required)")
+	noteCmd.MarkFlagRequired("message")
 	rootCmd.AddCommand(noteCmd)
 }

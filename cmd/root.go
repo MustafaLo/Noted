@@ -7,7 +7,6 @@ import (
 	"context"
 	"fmt"
 	"os"
-
 	"github.com/MustafaLo/Noted/internal"
 	"github.com/spf13/cobra"
 )
@@ -20,7 +19,7 @@ func authenticate(env map[string]string)(*internal.APIService, error){
 
 	client, err := internal.InitService(env["NOTION_API_KEY"]); 
 	if err != nil{
-		return nil, fmt.Errorf("Error authenticating %w", err)
+		return nil, fmt.Errorf("error authenticating %w", err)
 	}
 	return client, nil
 }
@@ -31,7 +30,7 @@ func intialize_db(s *internal.APIService, env map[string]string)(error){
 	}
 
 	if err := internal.IntializeDatabase(s, env["NOTION_DATABASE_ID"], env["NOTION_PAGE_ID"]); err != nil{
-		return fmt.Errorf("Error intializing %w", err)
+		return fmt.Errorf("error intializing %w", err)
 	}
 	return nil
 }
@@ -78,8 +77,6 @@ to quickly create a Cobra application.`,
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
