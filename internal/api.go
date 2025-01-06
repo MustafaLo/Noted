@@ -11,51 +11,36 @@ type APIService struct{
 	Client *notion.Client
 }
 
-var s APIService
-var envMap map[string]string
 
-func LoadEnv()(error){
-	if envMap != nil{
-		return nil
-	}
-
+func LoadEnv()(map[string]string, error){
 	data, err := godotenv.Read()
 	if err != nil{
-		return fmt.Errorf("error loading env file: %w", err)
+		return nil, fmt.Errorf("error loading env file: %w", err)
 	}
 
-	envMap = data
+	return data, nil
+}
+
+func UpdateEnv(new_env map[string]string)(error){
+	if err := godotenv.Write(new_env, ".env"); err != nil {
+		return fmt.Errorf("error writing to .env file: %w", err)
+	}
 	return nil
 }
 
-func InitService()(error){
-	//Client is already authenticated
-	if s.Client != nil{
-		return nil
-	}
-
-	if _, exists := envMap["NOTION_API_KEY"]; !exists{
-		return fmt.Errorf("env file needs authentication key")
-	}
-
-	client := notion.NewClient(envMap["NOTION_API_KEY"])
-	s.Client = client
-	return nil
+func InitService(API_KEY string)(*APIService, error){
+	return &APIService{Client: notion.NewClient(API_KEY)}, nil
 }
 
-func IntializeDatabase()(error){
-	if databaseID, exists := envMap["NOTION_DATABASE_ID"]; exists{
-		_, err := s.Client.FindDatabaseByID(context.Background(), databaseID)
+func IntializeDatabase(s *APIService, DB_ID string, PAGE_ID string)(error){
+	if DB_ID != ""{
+		_, err := s.Client.FindDatabaseByID(context.Background(), DB_ID)
 		if err == nil{
 			return nil
 		}
 	}
 
-	if _, exists := envMap["NOTION_PAGE_ID"]; !exists{
-		return fmt.Errorf("env file needs shared parent page ID")
-	}
-
-	database_params := createDatabaseParams(envMap["NOTION_PAGE_ID"])
+	database_params := createDatabaseParams(PAGE_ID)
 	if err := database_params.Validate(); err != nil {
 		return fmt.Errorf("invalid database parameters: %w", err)
 	}
@@ -65,10 +50,17 @@ func IntializeDatabase()(error){
 		return fmt.Errorf("unable to validate database parameters: %w", err)
 	}
 
-	envMap["NOTION_DATABASE_ID"] = database.ID
-	if err := godotenv.Write(envMap, ".env"); err != nil {
-		return fmt.Errorf("error writing to .env file: %w", err)
+	//Rewrite new environment variables with database id appended
+	envMap, err := LoadEnv()
+	if err != nil{
+		return err
 	}
+
+	envMap["NOTION_DATABASE_ID"] = database.ID
+	if err := UpdateEnv(envMap); err != nil{
+		return err
+	}
+
 	return nil
 }
 

@@ -11,23 +11,25 @@ import (
 )
 
 
-func authenticate()(error){
-	if err := internal.InitService(); err != nil{
-		return fmt.Errorf("Error authenticating %w", err)
+func authenticate(env map[string]string)(*internal.APIService, error){
+	if _, exists := env["NOTION_API_KEY"]; !exists{
+		return nil, fmt.Errorf("env file needs authentication key")
 	}
-	return nil
+
+	client, err := internal.InitService(env["NOTION_API_KEY"]); 
+	if err != nil{
+		return nil, fmt.Errorf("Error authenticating %w", err)
+	}
+	return client, nil
 }
 
-func intialize_db()(error){
-	if err := internal.IntializeDatabase(); err != nil{
+func intialize_db(s *internal.APIService, env map[string]string)(error){
+	if _, exists := env["NOTION_PAGE_ID"]; !exists{
+		return fmt.Errorf("env file needs shared parent page ID")
+	}
+
+	if err := internal.IntializeDatabase(s, env["NOTION_DATABASE_ID"], env["NOTION_PAGE_ID"]); err != nil{
 		return fmt.Errorf("Error intializing %w", err)
-	}
-	return nil
-}
-
-func intialize_env()(error){
-	if err := internal.LoadEnv(); err != nil{
-		return fmt.Errorf("Error loading %w", err)
 	}
 	return nil
 }
@@ -45,15 +47,19 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		if err := intialize_env(); err != nil{
+		envMap, err := internal.LoadEnv(); 
+		if err != nil{
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		if err := authenticate(); err != nil{
+
+		client, err := authenticate(envMap)
+		if err != nil{
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		if err := intialize_db(); err != nil{
+		
+		if err := intialize_db(client, envMap); err != nil{
 			fmt.Println(err)
 			os.Exit(1)
 		}
