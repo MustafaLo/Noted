@@ -1,8 +1,11 @@
 {
-    "fileName": "api.go",
-    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/internal/api.go",
-    "lines": null,
-    "timestamp": "2025-01-06T03:32:20.398Z",
+    "fileName": "note.go",
+    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/cmd/note.go",
+    "lines": {
+        "start": 70,
+        "end": 70
+    },
+    "timestamp": "2025-01-06T03:46:19.447Z",
     "language": "go",
     "workspace": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted"
 }

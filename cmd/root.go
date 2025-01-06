@@ -4,8 +4,10 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"os"
+
 	"github.com/MustafaLo/Noted/internal"
 	"github.com/spf13/cobra"
 )
@@ -58,11 +60,16 @@ to quickly create a Cobra application.`,
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		
+
 		if err := intialize_db(client, envMap); err != nil{
 			fmt.Println(err)
 			os.Exit(1)
 		}
+
+		//Passing in client and envMap to all sub commands
+		ctx := context.WithValue(cmd.Context(), "client", client)
+		ctx = context.WithValue(ctx, "envMap", envMap)
+		cmd.SetContext(ctx)
 	} ,
 
 

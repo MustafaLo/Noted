@@ -45,9 +45,6 @@ func printFileMetaData(data map[string]interface{}){
 
 
 
-
-
-
 // noteCmd represents the note command
 var noteCmd = &cobra.Command{
 	Use:   "note [lines to note on]",
@@ -69,6 +66,8 @@ var noteCmd = &cobra.Command{
 			return
 		}
 		printFileMetaData(activeFileMetaData)
+		notion_client := cmd.Context().Value("client")
+		fmt.Println("CLient", notion_client)
 	},
 }
 
