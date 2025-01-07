@@ -37,6 +37,8 @@ func printFileMetaData(metadata models.FileMetadata) {
     fmt.Printf("File Path: %s\n", metadata.FilePath)
     fmt.Printf("Lines: Start=%d, End=%d\n", metadata.Lines.Start, metadata.Lines.End)
     fmt.Printf("Timestamp: %s\n", metadata.Timestamp)
+	fmt.Printf("Language: %s\n", metadata.Language)
+
 }
 
 
@@ -91,8 +93,8 @@ func isValidLinesFormat(line_range string)(error){
 	return nil
 }
 
-func getCodeBlock(fileName string, lines string)(string, error){
-	file, err := os.Open(fileName)
+func getCodeBlock(filePath string, lines string)(string, error){
+	file, err := os.Open(filePath)
 	if err != nil{
 		return "", fmt.Errorf("error opening active file: %w", err)
 	}
@@ -164,7 +166,9 @@ var noteCmd = &cobra.Command{
 				fmt.Printf("Error: %s", err)
 				return
 			}
+			// internal.CreateCodeBlock(client, pageID, codeBlock, activeFileMetaData.)
 			fmt.Println(codeBlock)
+
 		}
 
 

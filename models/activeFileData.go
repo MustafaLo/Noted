@@ -8,4 +8,5 @@ type FileMetadata struct {
         End   int `json:"end"`
     } `json:"lines"`
     Timestamp string `json:"timestamp"`
+	Language string `json:"language"`
 }
