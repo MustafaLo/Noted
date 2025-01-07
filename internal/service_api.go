@@ -34,7 +34,7 @@ func createDatabasePageProperties(fileMetaData map[string]interface{}, note stri
 			RichText: []notion.RichText{{Text: &notion.Text{Content: note}}},
 		},
 		"Line Numbers": notion.DatabasePageProperty{
-			RichText: []notion.RichText{{Text: &notion.Text{Content: }}},
+			RichText: []notion.RichText{{Text: &notion.Text{Content: "Test"}}},
 		},
 		"Category": notion.DatabasePageProperty{
 			Select: &notion.SelectOptions{Name: category},

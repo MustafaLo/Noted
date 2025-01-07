@@ -7,6 +7,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"regexp"
+	"strconv"
+	"strings"
 
 	"github.com/MustafaLo/Noted/internal"
 	"github.com/spf13/cobra"
@@ -46,14 +49,40 @@ func printFileMetaData(data map[string]interface{}){
 	}
 }
 
+func setLines(fileMetaData map[string]interface{})(string, error){
+	//Check for no lines set
+	if lines == "" && fileMetaData["lines"] == nil{
+		return "None", nil
+	} else if lines != "" {
+		err := isValidLinesFormat()
+		if err != nil{
+			return "", err
+		}
+		return lines, nil
+	} else {
+		lines_struct, ok := fileMetaData["lines"].(map[string]interface{})
+	}
+
+}
+
 func isValidLinesFormat()(error){
-	
+	re := regexp.MustCompile(`^\d+$|^\d+-\d+$`)
+
+	if !re.MatchString(lines) {
+		return fmt.Errorf("invalid format for --lines: must be a number or range (e.g., 5 or 5-12)")
+	}
+
+	if strings.Contains(lines, "-"){
+		parts := strings.Split(lines, "-")
+		start, _ := strconv.Atoi(parts[0])
+		end, _ := strconv.Atoi(parts[1])
+		if start >= end{
+			return fmt.Errorf("invalid range: start must be less than end (e.g., 5-12)")
+		}
+	}
+
+	return nil
 }
-
-func setLines(highlighted map[string]interface{})(string, error){
-
-}
-
 
 
 var note string
@@ -79,13 +108,28 @@ var noteCmd = &cobra.Command{
 
 		client = cmd.Context().Value("client").(*internal.APIService)
 		databaseID = cmd.Context().Value("databaseID").(string)
-		if lines != nil{
 
+		if lines != ""{
+			err := isValidLinesFormat()
+			if err != nil{
+				fmt.Printf("Error %s", err)
+				return
+			}
+		} else{
+			lines_struct, ok := activeFileMetaData["lines"].(map[string]interface{})
+			if !ok{
+				fmt.Printf("lines is nil or not in a proper format -- check extension")
+				return
+			}
+			lines, err = setLines(lines_struct)
+			if err != nil{
+				fmt.Printf("Error %s", err)
+				return
+			}
 		}
-		lines, err = setLines(activeFileMetaData["lines"].(map[string]interface{}))
 
 
-		fmt.Println(activeFileMetaData)
+		printFileMetaData(activeFileMetaData)
 		if err := internal.CreateDatabaseEntry(client, databaseID, activeFileMetaData, note, category); err != nil{
 			fmt.Printf("Error: %s", err)
 			return
@@ -98,6 +142,7 @@ func init() {
 	noteCmd.Flags().StringVarP(&note, "message", "m", "", "Message (required)")
 	noteCmd.MarkFlagRequired("message")
 	noteCmd.Flags().StringVarP(&category, "category", "c", "", "Category of note")
+
 	noteCmd.Flags().StringVarP(&lines, "lines", "l", "", "Lines to highlight")
 	rootCmd.AddCommand(noteCmd)
 }
