@@ -161,10 +161,10 @@ var noteCmd = &cobra.Command{
 
 		printFileMetaData(activeFileMetaData)
 		fmt.Println(lines)
-		// if err := internal.CreateDatabaseEntry(client, databaseID, activeFileMetaData, note, category); err != nil{
-		// 	fmt.Printf("Error: %s", err)
-		// 	return
-		// }
+		if err := internal.CreateDatabaseEntry(client, databaseID, activeFileMetaData, note, lines, category); err != nil{
+			fmt.Printf("Error: %s", err)
+			return
+		}
 	},
 }
 
