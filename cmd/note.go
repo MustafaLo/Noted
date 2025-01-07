@@ -65,13 +65,15 @@ var noteCmd = &cobra.Command{
 			fmt.Printf("Error %s", err)
 			return
 		}
-		
+
 		client = cmd.Context().Value("client").(*internal.APIService)
 		databaseID = cmd.Context().Value("databaseID").(string)
-		if err := internal.CreateDatabaseEntry(client, databaseID, activeFileMetaData, note, category); err != nil{
-			fmt.Printf("Error: %s", err)
-			return
-		}
+
+		fmt.Println(activeFileMetaData)
+		// if err := internal.CreateDatabaseEntry(client, databaseID, activeFileMetaData, note, category); err != nil{
+		// 	fmt.Printf("Error: %s", err)
+		// 	return
+		// }
 	},
 }
 

@@ -67,19 +67,19 @@ func createDatabaseParams(pageID string)(notion.CreateDatabaseParams){
 		Properties: notion.DatabaseProperties{
 			"File Name": notion.DatabaseProperty{
 				Type: notion.DBPropTypeTitle,
-				Title: nil,
+				Title: &notion.EmptyMetadata{},
 			},
 			"Note": notion.DatabaseProperty{
 				Type: notion.DBPropTypeRichText,
-				RichText: nil,
+				RichText: &notion.EmptyMetadata{},
 			},
 			"Line Numbers": notion.DatabaseProperty{
 				Type: notion.DBPropTypeRichText,
-				RichText: nil,
+				RichText: &notion.EmptyMetadata{},
 			},
 			"Timestamp":notion.DatabaseProperty{
 				Type: notion.DBPropTypeCreatedTime,
-				CreatedTime: nil,
+				CreatedTime: &notion.EmptyMetadata{},
 			},
 			"Category":notion.DatabaseProperty{
 				Type: notion.DBPropTypeSelect,
