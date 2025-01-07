@@ -7,7 +7,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"go/scanner"
+	// "go/scanner"
 	"os"
 	"regexp"
 	"strconv"
@@ -67,6 +67,13 @@ func setLines(highlighted_start int, highlighted_end int)(string, error){
 	return highlighted_lines, nil
 }
 
+func splitLineParts(line_range string)(int, int){
+	parts := strings.Split(line_range, "-")
+	start, _ := strconv.Atoi(parts[0])
+	end, _ := strconv.Atoi(parts[1])
+	return start, end
+}
+
 func isValidLinesFormat(line_range string)(error){
 	re := regexp.MustCompile(`^\d+$|^\d+-\d+$`)
 
@@ -75,9 +82,7 @@ func isValidLinesFormat(line_range string)(error){
 	}
 
 	if strings.Contains(line_range, "-"){
-		parts := strings.Split(line_range, "-")
-		start, _ := strconv.Atoi(parts[0])
-		end, _ := strconv.Atoi(parts[1])
+		start, end := splitLineParts(line_range)
 		if start >= end{
 			return fmt.Errorf("invalid range: start must be less than end (e.g., 5-12)")
 		}
@@ -86,7 +91,7 @@ func isValidLinesFormat(line_range string)(error){
 	return nil
 }
 
-func getCodeBlock(fileName string, start int, end int)(string, error){
+func getCodeBlock(fileName string, lines string)(string, error){
 	file, err := os.Open(fileName)
 	if err != nil{
 		return "", fmt.Errorf("error opening active file: %w", err)
@@ -115,13 +120,10 @@ func getCodeBlock(fileName string, start int, end int)(string, error){
 	}
 
 	return strings.Join(codeLines, "\n"), nil
-
 }
 
 
 var note string
-var client *models.APIService
-var databaseID string
 var category string
 var lines string
 
@@ -140,21 +142,28 @@ var noteCmd = &cobra.Command{
 			return
 		}
 
-		client = cmd.Context().Value("client").(*models.APIService)
-		databaseID = cmd.Context().Value("databaseID").(string)
+		client := cmd.Context().Value("client").(*models.APIService)
+		databaseID := cmd.Context().Value("databaseID").(string)
 		
-		lines, err := setLines(activeFileMetaData.Lines.Start, activeFileMetaData.Lines.End)
+		lines, err = setLines(activeFileMetaData.Lines.Start, activeFileMetaData.Lines.End)
 		if err != nil{
 			fmt.Printf("Error %s", err)
 			return
 		}
 
-		if err := internal.CreateDatabaseEntry(client, databaseID, activeFileMetaData, note, lines, category); err != nil{
+		pageID, err := internal.CreateDatabaseEntry(client, databaseID, activeFileMetaData, note, lines, category)
+		if err != nil{
 			fmt.Printf("Error: %s", err)
 			return
 		}
 
+		if lines != "None"{
+			codeBlock, err := getCodeBlock(activeFileMetaData.FileName, lines)
+		}
+
+
 		printFileMetaData(activeFileMetaData)
+		fmt.Println(pageID)
 	},
 }
 
