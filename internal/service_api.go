@@ -19,7 +19,24 @@ func CreateDatabaseEntry(s *models.APIService, DB_ID string, fileMetaData models
 	return page.ID, nil
 }
 
-// func CreateCodeBlock(s * models.APIService, )
+func UpdateDatabaseEntry(s * models.APIService, PAGE_ID string, code string, language string)(error){
+	code_block := createCodeBlock(code, language)
+	
+	_, err := s.Client.AppendBlockChildren(context.Background(), PAGE_ID, []notion.Block{code_block})
+	if err != nil {
+		return fmt.Errorf("failed to append code block: %w", err)
+	}
+	fmt.Println("Code block successfully added to the Notion page!")
+	return nil
+}
+
+func createCodeBlock(content string, language string)(notion.CodeBlock){
+	return notion.CodeBlock{
+		RichText: []notion.RichText{{Text: &notion.Text{Content: content}}},
+		Language: &language,
+	}
+}
+
 
 func createPageParams(DB_ID string, db_page_props notion.DatabasePageProperties)(notion.CreatePageParams){
 	return notion.CreatePageParams{
