@@ -67,7 +67,7 @@ to quickly create a Cobra application.`,
 
 		//Passing in client and envMap to all sub commands
 		ctx := context.WithValue(cmd.Context(), "client", client)
-		ctx = context.WithValue(ctx, "envMap", envMap)
+		ctx = context.WithValue(ctx, "databaseID", envMap["NOTION_DATABASE_ID"])
 		cmd.SetContext(ctx)
 	} ,
 

@@ -27,6 +27,7 @@ func getCurrentFileMetadata()(map[string]interface{}, error){
 	return metadata, nil
 }
 
+
 func printFileMetaData(data map[string]interface{}){
 	for k, v := range data{
 		if k == "lines" && v != nil{
@@ -47,8 +48,9 @@ func printFileMetaData(data map[string]interface{}){
 
 var note string
 var client *internal.APIService
+var databaseID string
+var category string
 
-// noteCmd represents the note command
 var noteCmd = &cobra.Command{
 	Use:   "note [lines to note on]",
 	Short: "Write notes about your code",
@@ -57,24 +59,19 @@ var noteCmd = &cobra.Command{
 	comment on. The CLI will automatically detect your current workding directory
 	and file`,
 
-
-	//Use the Flag StringVarP command to directly insert line range into variable
-	//as opposed to parsing through the argument string array. Cobra will automatically
-	//handle flag parsing
-
 	Run: func(cmd *cobra.Command, args []string) {
 		activeFileMetaData, err := getCurrentFileMetadata()
 		if err != nil{
 			fmt.Printf("Error %s", err)
 			return
 		}
-		printFileMetaData(activeFileMetaData)
-
-
-
+		
 		client = cmd.Context().Value("client").(*internal.APIService)
-		fmt.Println("CLient", client)
-		fmt.Println("Note", note)
+		databaseID = cmd.Context().Value("databaseID").(string)
+		if err := internal.CreateDatabaseEntry(client, databaseID, activeFileMetaData, note, category); err != nil{
+			fmt.Printf("Error: %s", err)
+			return
+		}
 	},
 }
 
@@ -82,5 +79,6 @@ var noteCmd = &cobra.Command{
 func init() {
 	noteCmd.Flags().StringVarP(&note, "message", "m", "", "Message (required)")
 	noteCmd.MarkFlagRequired("message")
+	noteCmd.Flags().StringVarP(&category, "category", "c", "", "Category of note")
 	rootCmd.AddCommand(noteCmd)
 }
