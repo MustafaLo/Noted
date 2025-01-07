@@ -7,10 +7,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	// "regexp"
-	// "strconv"
-	// "strings"
-
+	"regexp"
+	"strconv"
+	"strings"
 	"github.com/MustafaLo/Noted/internal"
 	"github.com/spf13/cobra"
 )
@@ -72,55 +71,51 @@ func printFileMetaData(metadata FileMetadata) {
 // 	}
 // }
 
-// func setLines(fileMetaData map[string]interface{})(string, error){
-// 	//Check for no lines set
-// 	if lines == "" && fileMetaData["lines"] == nil{
-// 		return "None", nil
-// 	} else if lines != "" {
-// 		err := isValidLinesFormat(lines)
-// 		if err != nil{
-// 			return "", err
-// 		}
-// 		return lines, nil
-// 	} 
-// 	var highlighted_lines string
+func setLines(highlighted_start int, highlighted_end int)(string, error){
+	//Check for no lines set
+	if lines == "" && highlighted_start == 0 && highlighted_end == 0{
+		return "None", nil
+	} else if lines != "" {
+		err := isValidLinesFormat(lines)
+		if err != nil{
+			return "", err
+		}
+		return lines, nil
+	} 
+	var highlighted_lines string
+
+	if highlighted_start == highlighted_end{
+		highlighted_lines = strconv.Itoa(highlighted_start)
+	} else {
+		highlighted_lines = strconv.Itoa(highlighted_start) + "-" + strconv.Itoa(highlighted_end)
+	}
 	
-// 	lines_struct, ok := fileMetaData["lines"].(map[string]interface{})
-// 	if !ok {
-// 		return "", fmt.Errorf("highlighted lines is not in a proper format -- check active file extension")
-// 	}
+	err := isValidLinesFormat(highlighted_lines)
+	if err != nil{
+		return "", err
+	}
 
-// 	start, start_exists := lines_struct["start"]
-// 	end, end_exists := lines_struct["end"]
+	return highlighted_lines, nil
+}
 
-// 	if !start_exists || !end_exists {
-// 		return "", fmt.Errorf("highlighted lines is not in a proper format -- check active file extension")
-// 	}
-// 	if start == end{
-// 		highlighted_lines = 
-// 	}
+func isValidLinesFormat(line_range string)(error){
+	re := regexp.MustCompile(`^\d+$|^\d+-\d+$`)
 
+	if !re.MatchString(line_range) {
+		return fmt.Errorf("invalid format for lines: must be a number or range (e.g., 5 or 5-12)")
+	}
 
-// }
+	if strings.Contains(line_range, "-"){
+		parts := strings.Split(line_range, "-")
+		start, _ := strconv.Atoi(parts[0])
+		end, _ := strconv.Atoi(parts[1])
+		if start >= end{
+			return fmt.Errorf("invalid range: start must be less than end (e.g., 5-12)")
+		}
+	}
 
-// func isValidLinesFormat(line_range string)(error){
-// 	re := regexp.MustCompile(`^\d+$|^\d+-\d+$`)
-
-// 	if !re.MatchString(line_range) {
-// 		return fmt.Errorf("invalid format for --lines: must be a number or range (e.g., 5 or 5-12)")
-// 	}
-
-// 	if strings.Contains(line_range, "-"){
-// 		parts := strings.Split(line_range, "-")
-// 		start, _ := strconv.Atoi(parts[0])
-// 		end, _ := strconv.Atoi(parts[1])
-// 		if start >= end{
-// 			return fmt.Errorf("invalid range: start must be less than end (e.g., 5-12)")
-// 		}
-// 	}
-
-// 	return nil
-// }
+	return nil
+}
 
 
 var note string
@@ -157,28 +152,15 @@ var noteCmd = &cobra.Command{
 
 		client = cmd.Context().Value("client").(*internal.APIService)
 		databaseID = cmd.Context().Value("databaseID").(string)
-
-		// if lines != ""{
-		// 	err := isValidLinesFormat()
-		// 	if err != nil{
-		// 		fmt.Printf("Error %s", err)
-		// 		return
-		// 	}
-		// } else{
-		// 	lines_struct, ok := activeFileMetaData["lines"].(map[string]interface{})
-		// 	if !ok{
-		// 		fmt.Printf("lines is nil or not in a proper format -- check extension")
-		// 		return
-		// 	}
-		// 	lines, err = setLines(lines_struct)
-		// 	if err != nil{
-		// 		fmt.Printf("Error %s", err)
-		// 		return
-		// 	}
-		// }
-
+		
+		lines, err := setLines(activeFileMetaData.Lines.Start, activeFileMetaData.Lines.End)
+		if err != nil{
+			fmt.Printf("Error %s", err)
+			return
+		}
 
 		printFileMetaData(activeFileMetaData)
+		fmt.Println(lines)
 		// if err := internal.CreateDatabaseEntry(client, databaseID, activeFileMetaData, note, category); err != nil{
 		// 	fmt.Printf("Error: %s", err)
 		// 	return
