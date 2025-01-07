@@ -3,8 +3,6 @@ package internal
 import (
 	"context"
 	"fmt"
-	"time"
-
 	"github.com/dstotijn/go-notion"
 )
 
@@ -16,6 +14,7 @@ func CreateDatabaseEntry(s *APIService, DB_ID string, fileMetaData map[string]in
 		return fmt.Errorf("Error creating page: ", err)
 	}
 	fmt.Println("Page created successfully: ", page.URL)
+	return nil
 }
 
 func createPageParams(DB_ID string, db_page_props notion.DatabasePageProperties)(notion.CreatePageParams){
@@ -35,7 +34,7 @@ func createDatabasePageProperties(fileMetaData map[string]interface{}, note stri
 			RichText: []notion.RichText{{Text: &notion.Text{Content: note}}},
 		},
 		"Line Numbers": notion.DatabasePageProperty{
-			RichText: []notion.RichText{{Text: &notion.Text{Content: fileMetaData["lines"].(string)}}},
+			RichText: []notion.RichText{{Text: &notion.Text{Content: }}},
 		},
 		"Category": notion.DatabasePageProperty{
 			Select: &notion.SelectOptions{Name: category},

@@ -46,10 +46,21 @@ func printFileMetaData(data map[string]interface{}){
 	}
 }
 
+func isValidLinesFormat()(error){
+	
+}
+
+func setLines(highlighted map[string]interface{})(string, error){
+
+}
+
+
+
 var note string
 var client *internal.APIService
 var databaseID string
 var category string
+var lines string
 
 var noteCmd = &cobra.Command{
 	Use:   "note [lines to note on]",
@@ -68,6 +79,11 @@ var noteCmd = &cobra.Command{
 
 		client = cmd.Context().Value("client").(*internal.APIService)
 		databaseID = cmd.Context().Value("databaseID").(string)
+		if lines != nil{
+
+		}
+		lines, err = setLines(activeFileMetaData["lines"].(map[string]interface{}))
+
 
 		fmt.Println(activeFileMetaData)
 		if err := internal.CreateDatabaseEntry(client, databaseID, activeFileMetaData, note, category); err != nil{
@@ -82,5 +98,6 @@ func init() {
 	noteCmd.Flags().StringVarP(&note, "message", "m", "", "Message (required)")
 	noteCmd.MarkFlagRequired("message")
 	noteCmd.Flags().StringVarP(&category, "category", "c", "", "Category of note")
+	noteCmd.Flags().StringVarP(&lines, "lines", "l", "", "Lines to highlight")
 	rootCmd.AddCommand(noteCmd)
 }
