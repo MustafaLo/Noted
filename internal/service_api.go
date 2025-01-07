@@ -7,7 +7,7 @@ import (
 	"github.com/dstotijn/go-notion"
 )
 
-func CreateDatabaseEntry(s *APIService, DB_ID string, fileMetaData models.FileMetadata, note string, lines string, category string)(error){
+func CreateDatabaseEntry(s *models.APIService, DB_ID string, fileMetaData models.FileMetadata, note string, lines string, category string)(error){
 	database_page_properties := createDatabasePageProperties(fileMetaData, note, lines, category)
 	page_parameters := createPageParams(DB_ID, database_page_properties)
 	page, err := s.Client.CreatePage(context.Background(), page_parameters)

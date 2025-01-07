@@ -8,11 +8,12 @@ import (
 	"fmt"
 	"os"
 	"github.com/MustafaLo/Noted/internal"
+	"github.com/MustafaLo/Noted/models"
 	"github.com/spf13/cobra"
 )
 
 
-func authenticate(env map[string]string)(*internal.APIService, error){
+func authenticate(env map[string]string)(*models.APIService, error){
 	if _, exists := env["NOTION_API_KEY"]; !exists{
 		return nil, fmt.Errorf("env file needs authentication key")
 	}
@@ -24,7 +25,7 @@ func authenticate(env map[string]string)(*internal.APIService, error){
 	return client, nil
 }
 
-func intialize_db(s *internal.APIService, env map[string]string)(error){
+func intialize_db(s *models.APIService, env map[string]string)(error){
 	if _, exists := env["NOTION_PAGE_ID"]; !exists{
 		return fmt.Errorf("env file needs shared parent page ID")
 	}

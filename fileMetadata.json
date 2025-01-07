@@ -1,11 +1,8 @@
 {
-    "fileName": "test.py",
-    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/tests/test.py",
-    "lines": {
-        "start": 15,
-        "end": 20
-    },
-    "timestamp": "2025-01-07T06:14:30.046Z",
-    "language": "python",
+    "fileName": "service_api.go",
+    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/internal/service_api.go",
+    "lines": null,
+    "timestamp": "2025-01-07T06:17:40.272Z",
+    "language": "go",
     "workspace": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted"
 }

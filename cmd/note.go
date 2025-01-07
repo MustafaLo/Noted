@@ -120,12 +120,10 @@ func isValidLinesFormat(line_range string)(error){
 
 
 var note string
-var client *internal.APIService
+var client *models.APIService
 var databaseID string
 var category string
 var lines string
-
-
 
 var noteCmd = &cobra.Command{
 	Use:   "note [lines to note on]",
@@ -142,7 +140,7 @@ var noteCmd = &cobra.Command{
 			return
 		}
 
-		client = cmd.Context().Value("client").(*internal.APIService)
+		client = cmd.Context().Value("client").(*models.APIService)
 		databaseID = cmd.Context().Value("databaseID").(string)
 		
 		lines, err := setLines(activeFileMetaData.Lines.Start, activeFileMetaData.Lines.End)

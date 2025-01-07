@@ -3,19 +3,19 @@ package internal
 import (
 	"context"
 	"fmt"
+
+	"github.com/MustafaLo/Noted/models"
 	"github.com/dstotijn/go-notion"
 )
 
-type APIService struct{
-	Client *notion.Client
+
+
+
+func InitService(API_KEY string)(*models.APIService, error){
+	return &models.APIService{Client: notion.NewClient(API_KEY)}, nil
 }
 
-
-func InitService(API_KEY string)(*APIService, error){
-	return &APIService{Client: notion.NewClient(API_KEY)}, nil
-}
-
-func IntializeDatabase(s *APIService, DB_ID string, PAGE_ID string)(error){
+func IntializeDatabase(s *models.APIService, DB_ID string, PAGE_ID string)(error){
 	if DB_ID != ""{
 		_, err := s.Client.FindDatabaseByID(context.Background(), DB_ID)
 		if err == nil{
