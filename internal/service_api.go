@@ -12,8 +12,15 @@ func createPageParams()(notion.CreatePageParams){
 
 }
 
-func createDatabasePageProperties()(notion.DatabasePageProperties){
-	return notion.DatabasePageProperties{
-		
+func createDatabasePageProperties(fileMetaData map[string]interface{}, note string, category string)(notion.DatabaseProperties){
+	return notion.DatabaseProperties{
+		"File Name": notion.DatabaseProperty{
+			Type: notion.DBPropTypeTitle,
+			Title: []notion.RichText{{Text: &notion.Text{Content: fileMetaData["fileName"].(string)}}},
+		},
+		"Note": notion.DatabaseProperty{
+			Type: notion.DBPropTypeRichText,
+			RichText: []notion.RichText{{Text: &notion.Text{Content: note}}},
+		},
 	}
 }
