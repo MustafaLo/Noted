@@ -98,10 +98,11 @@ func getCodeBlock(fileName string, lines string)(string, error){
 	}
 	defer file.Close()
 
-	
+
+	var codeLines []string
 	scanner := bufio.NewScanner(file)
 	currentLine := 1
-	var codeLines []string
+	start, end := splitLineParts(lines)
 
 	for scanner.Scan(){
 		if currentLine >= start && currentLine <= end{
@@ -158,7 +159,12 @@ var noteCmd = &cobra.Command{
 		}
 
 		if lines != "None"{
-			codeBlock, err := getCodeBlock(activeFileMetaData.FileName, lines)
+			codeBlock, err := getCodeBlock(activeFileMetaData.FilePath, lines)
+			if err != nil{
+				fmt.Printf("Error: %s", err)
+				return
+			}
+			fmt.Println(codeBlock)
 		}
 
 
