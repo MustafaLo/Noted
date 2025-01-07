@@ -149,12 +149,13 @@ var noteCmd = &cobra.Command{
 			return
 		}
 
-		printFileMetaData(activeFileMetaData)
-		fmt.Println(lines)
+
 		if err := internal.CreateDatabaseEntry(client, databaseID, activeFileMetaData, note, lines, category); err != nil{
 			fmt.Printf("Error: %s", err)
 			return
 		}
+
+		printFileMetaData(activeFileMetaData)
 	},
 }
 
@@ -162,7 +163,7 @@ var noteCmd = &cobra.Command{
 func init() {
 	noteCmd.Flags().StringVarP(&note, "message", "m", "", "Message (required)")
 	noteCmd.MarkFlagRequired("message")
-	noteCmd.Flags().StringVarP(&category, "category", "c", "", "Category of note")
+	noteCmd.Flags().StringVarP(&category, "category", "c", "None", "Category of note")
 
 	noteCmd.Flags().StringVarP(&lines, "lines", "l", "", "Lines to highlight")
 	rootCmd.AddCommand(noteCmd)
