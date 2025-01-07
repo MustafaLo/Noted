@@ -149,7 +149,6 @@ var noteCmd = &cobra.Command{
 			return
 		}
 
-
 		if err := internal.CreateDatabaseEntry(client, databaseID, activeFileMetaData, note, lines, category); err != nil{
 			fmt.Printf("Error: %s", err)
 			return
