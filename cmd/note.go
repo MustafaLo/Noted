@@ -4,8 +4,10 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
+	"go/scanner"
 	"os"
 	"regexp"
 	"strconv"
@@ -37,40 +39,6 @@ func printFileMetaData(metadata models.FileMetadata) {
     fmt.Printf("Timestamp: %s\n", metadata.Timestamp)
 }
 
-
-
-// func getCurrentFileMetadata()(map[string]interface{}, error){
-// 	var metadata map[string]interface{}
-// 	data, err := os.ReadFile("fileMetadata.json")
-// 	if err != nil{
-// 		return nil, fmt.Errorf("failed to open fileMetaData -- make sure to enable File Tracker Extension")
-// 	}
-
-// 	ok := json.Unmarshal(data, &metadata)
-// 	if ok != nil{
-// 		return nil, fmt.Errorf("failed to parse fileMetaData")
-// 	}
-// 	return metadata, nil
-// }
-
-
-// func printFileMetaData(data map[string]interface{}){
-// 	for k, v := range data{
-// 		if k == "lines" && v != nil{
-// 			if linesMap, ok := v.(map[string]interface{}); ok {
-// 				fmt.Printf("key: %s, value: {", k)
-// 				for lk, lv := range linesMap {
-// 					fmt.Printf("%s: %0.f,", lk, lv) // Adjust formatting as needed
-// 				}
-// 				fmt.Println("}")
-// 			} else {
-// 				fmt.Printf("Not okay")
-// 			}
-// 		} else{
-// 			fmt.Printf("key: %s, value: %s\n", k, v)
-// 		}
-// 	}
-// }
 
 func setLines(highlighted_start int, highlighted_end int)(string, error){
 	//Check for no lines set
@@ -116,6 +84,38 @@ func isValidLinesFormat(line_range string)(error){
 	}
 
 	return nil
+}
+
+func getCodeBlock(fileName string, start int, end int)(string, error){
+	file, err := os.Open(fileName)
+	if err != nil{
+		return "", fmt.Errorf("error opening active file: %w", err)
+	}
+	defer file.Close()
+
+	
+	scanner := bufio.NewScanner(file)
+	currentLine := 1
+	var codeLines []string
+
+	for scanner.Scan(){
+		if currentLine >= start && currentLine <= end{
+			codeLines = append(codeLines, scanner.Text())
+		}
+
+		if currentLine > end{
+			break
+		}
+
+		currentLine ++
+	}
+
+	if err := scanner.Err(); err != nil{
+		return "", fmt.Errorf("error reading file: %w", err)
+	}
+
+	return strings.Join(codeLines, "\n"), nil
+
 }
 
 
