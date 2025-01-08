@@ -1,8 +1,11 @@
 {
-    "fileName": "note.go",
-    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/cmd/note.go",
-    "lines": null,
-    "timestamp": "2025-01-08T01:02:18.112Z",
+    "fileName": "notionClient.go",
+    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/models/notionClient.go",
+    "lines": {
+        "start": 5,
+        "end": 7
+    },
+    "timestamp": "2025-01-08T01:11:08.802Z",
     "language": "go",
     "workspace": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted"
 }

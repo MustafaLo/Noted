@@ -166,7 +166,7 @@ var noteCmd = &cobra.Command{
 				fmt.Printf("Error: %s", err)
 				return
 			}
-			err = internal.UpdateDatabaseEntry(client, pageID, codeBlock, activeFileMetaData.Language)
+			err = internal.UpdateDatabaseEntry(client, pageID, codeBlock, activeFileMetaData.Language, note)
 			if err != nil{
 				fmt.Printf("Error: %s", err)
 				return
