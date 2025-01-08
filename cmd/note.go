@@ -171,13 +171,8 @@ var noteCmd = &cobra.Command{
 				fmt.Printf("Error: %s", err)
 				return
 			}
-			fmt.Println(codeBlock)
 
 		}
-
-
-		printFileMetaData(activeFileMetaData)
-		fmt.Println(pageID)
 	},
 }
 
