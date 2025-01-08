@@ -7,7 +7,6 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	// "go/scanner"
 	"os"
 	"regexp"
 	"strconv"
@@ -113,7 +112,7 @@ func getCodeBlock(filePath string, lines string)(string, error){
 		if currentLine > end{
 			break
 		}
-		currentLine ++
+		currentLine++
 	}
 
 	if err := scanner.Err(); err != nil{
@@ -129,12 +128,28 @@ var category string
 var lines string
 
 var noteCmd = &cobra.Command{
-	Use:   "note [lines to note on]",
+	Use:   "note",
 	Short: "Write notes about your code",
-	Long: `Use the note command to write notes on highlighted portions of your code
-	You can also optionally use the --lines flag and specify the range of your code block to 
-	comment on. The CLI will automatically detect your current workding directory
-	and file`,
+	Long: `Use the note command to write notes on highlighted portions of your code.
+	
+	Subcommands:
+	* --message (-m): Required flag that you should use to specify the note you'd like to write
+	    * Example Usage: 
+			- ./noted note -m "Example note"
+
+	* --lines (-l): Optional flag you can use to specify the range of your code block to comment on. The Current File Tracker 
+					Extension will automatically detect highlighted code blocks on your active file
+	   * Example Usage: 
+	        - ./noted note -m "Example note" -l 15-20
+			- ./noted note -m "Example note" -l 25
+		
+	* --category (-c): Optional flag you can use to specify an existing or new category that your note falls under
+	   * Example Usage:
+			- ./noted note -m "Example note" -c "Syntax"
+			- ./noted note -m "Example note" -c "Design"
+	
+
+`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		activeFileMetaData, err := getCurrentFileMetadata()
