@@ -110,11 +110,9 @@ func getCodeBlock(filePath string, lines string)(string, error){
 		if currentLine >= start && currentLine <= end{
 			codeLines = append(codeLines, scanner.Text())
 		}
-
 		if currentLine > end{
 			break
 		}
-
 		currentLine ++
 	}
 

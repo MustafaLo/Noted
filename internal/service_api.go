@@ -20,14 +20,22 @@ func CreateDatabaseEntry(s *models.APIService, DB_ID string, fileMetaData models
 }
 
 func UpdateDatabaseEntry(s *models.APIService, PAGE_ID string, code string, language string, note string)(error){
+	code_heading_block := createHeadingBlock("Code Snippet")
 	code_block := createCodeBlock(code, language)
 	note_block := createNoteBlock(note)
-	_, err := s.Client.AppendBlockChildren(context.Background(), PAGE_ID, []notion.Block{code_block, note_block})
+	note_heading_block := createHeadingBlock("Note")
+	_, err := s.Client.AppendBlockChildren(context.Background(), PAGE_ID, []notion.Block{code_heading_block, code_block, note_heading_block, note_block})
 	if err != nil {
 		return fmt.Errorf("failed to append code block: %w", err)
 	}
 	fmt.Println("Code block successfully added to the Notion page!")
 	return nil
+}
+
+func createHeadingBlock(content string)(notion.Heading2Block){
+	return notion.Heading2Block{
+		RichText: []notion.RichText{{Text: &notion.Text{Content: content}}},
+	}
 }
 
 func createNoteBlock(content string)(notion.ParagraphBlock){
