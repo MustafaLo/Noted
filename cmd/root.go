@@ -25,6 +25,8 @@ func authenticate(env map[string]string)(*models.APIService, error){
 	return client, nil
 }
 
+
+
 func intialize_db(s *models.APIService, env map[string]string)(string, error){
 	if _, exists := env["NOTION_PAGE_ID"]; !exists{
 		return "", fmt.Errorf("env file needs shared parent page ID")

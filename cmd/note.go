@@ -5,7 +5,6 @@ package cmd
 
 import (
 	"bufio"
-	"encoding/json"
 	"fmt"
 	"os"
 	"regexp"
@@ -16,29 +15,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func getCurrentFileMetadata() (models.FileMetadata, error) {
-    var metadata models.FileMetadata
-    data, err := os.ReadFile("fileMetadata.json")
-    if err != nil {
-        return metadata, fmt.Errorf("failed to open fileMetaData -- make sure to enable File Tracker Extension")
-    }
-
-    err = json.Unmarshal(data, &metadata)
-    if err != nil {
-        return metadata, fmt.Errorf("failed to parse fileMetaData: %w", err)
-    }
-
-    return metadata, nil
-}
-
-func printFileMetaData(metadata models.FileMetadata) {
-    fmt.Printf("File Name: %s\n", metadata.FileName)
-    fmt.Printf("File Path: %s\n", metadata.FilePath)
-    fmt.Printf("Lines: Start=%d, End=%d\n", metadata.Lines.Start, metadata.Lines.End)
-    fmt.Printf("Timestamp: %s\n", metadata.Timestamp)
-	fmt.Printf("Language: %s\n", metadata.Language)
-
-}
 
 
 func setLines(highlighted_start int, highlighted_end int)(string, error){
@@ -148,7 +124,7 @@ var noteCmd = &cobra.Command{
 			- ./noted note -m "Example note" -c "Design"`,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		activeFileMetaData, err := getCurrentFileMetadata()
+		activeFileMetaData, err := internal.GetCurrentFileMetadata()
 		if err != nil{
 			fmt.Printf("Error %s", err)
 			return
