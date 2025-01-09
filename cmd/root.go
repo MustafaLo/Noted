@@ -25,15 +25,16 @@ func authenticate(env map[string]string)(*models.APIService, error){
 	return client, nil
 }
 
-func intialize_db(s *models.APIService, env map[string]string)(error){
+func intialize_db(s *models.APIService, env map[string]string)(string, error){
 	if _, exists := env["NOTION_PAGE_ID"]; !exists{
-		return fmt.Errorf("env file needs shared parent page ID")
+		return "", fmt.Errorf("env file needs shared parent page ID")
 	}
 
-	if err := internal.IntializeDatabase(s, env["NOTION_DATABASE_ID"], env["NOTION_PAGE_ID"]); err != nil{
-		return fmt.Errorf("error intializing %w", err)
+	database_id, err := internal.IntializeDatabase(s, env["NOTION_DATABASE_ID"], env["NOTION_PAGE_ID"])
+	if err != nil{
+		return "", fmt.Errorf("error intializing %w", err)
 	}
-	return nil
+	return database_id, nil
 }
 
 
@@ -57,14 +58,15 @@ examples and usage of using your application. For example:`,
 			os.Exit(1)
 		}
 
-		if err := intialize_db(client, envMap); err != nil{
+		database_id, err := intialize_db(client, envMap)
+		if err != nil{
 			fmt.Println(err)
 			os.Exit(1)
 		}
 
 		//Passing in client and envMap to all sub commands
 		ctx := context.WithValue(cmd.Context(), "client", client)
-		ctx = context.WithValue(ctx, "databaseID", envMap["NOTION_DATABASE_ID"])
+		ctx = context.WithValue(ctx, "databaseID", database_id)
 		cmd.SetContext(ctx)
 	} ,
 }

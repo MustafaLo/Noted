@@ -13,36 +13,37 @@ func InitService(API_KEY string)(*models.APIService, error){
 	return &models.APIService{Client: notion.NewClient(API_KEY)}, nil
 }
 
-func IntializeDatabase(s *models.APIService, DB_ID string, PAGE_ID string)(error){
+func IntializeDatabase(s *models.APIService, DB_ID string, PAGE_ID string)(string, error){
 	if DB_ID != ""{
 		_, err := s.Client.FindDatabaseByID(context.Background(), DB_ID)
 		if err == nil{
-			return nil
+			return "", nil
 		}
+		return DB_ID, nil
 	}
 
 	database_params := createDatabaseParams(PAGE_ID)
 	if err := database_params.Validate(); err != nil {
-		return fmt.Errorf("invalid database parameters: %w", err)
+		return "", fmt.Errorf("invalid database parameters: %w", err)
 	}
 
 	database, err := s.Client.CreateDatabase(context.Background(), database_params)
 	if err != nil{
-		return fmt.Errorf("unable to validate database parameters: %w", err)
+		return "", fmt.Errorf("unable to validate database parameters: %w", err)
 	}
 
 	//Rewrite new environment variables with database id appended
 	envMap, err := LoadEnv()
 	if err != nil{
-		return err
+		return "", err
 	}
 
 	envMap["NOTION_DATABASE_ID"] = database.ID
 	if err := UpdateEnv(envMap); err != nil{
-		return err
+		return "", err
 	}
 
-	return nil
+	return envMap["NOTION_DATABASE_ID"], nil
 }
 
 func createDatabaseParams(pageID string)(notion.CreateDatabaseParams){

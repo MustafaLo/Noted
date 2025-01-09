@@ -131,7 +131,6 @@ var noteCmd = &cobra.Command{
 	Use:   "note",
 	Short: "Write notes about your code",
 	Long: `Use the note command to write notes on highlighted portions of your code.
-	
 	Subcommands:
 	* --message (-m): Required flag that you should use to specify the note you'd like to write
 	    * Example Usage: 
@@ -146,10 +145,7 @@ var noteCmd = &cobra.Command{
 	* --category (-c): Optional flag you can use to specify an existing or new category that your note falls under
 	   * Example Usage:
 			- ./noted note -m "Example note" -c "Syntax"
-			- ./noted note -m "Example note" -c "Design"
-	
-
-`,
+			- ./noted note -m "Example note" -c "Design"`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		activeFileMetaData, err := getCurrentFileMetadata()
@@ -194,7 +190,7 @@ func init() {
 	noteCmd.Flags().StringVarP(&note, "message", "m", "", "Message (required)")
 	noteCmd.MarkFlagRequired("message")
 	noteCmd.Flags().StringVarP(&category, "category", "c", "None", "Category of note")
-
 	noteCmd.Flags().StringVarP(&lines, "lines", "l", "", "Lines to highlight")
+
 	rootCmd.AddCommand(noteCmd)
 }
