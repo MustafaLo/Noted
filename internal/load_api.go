@@ -17,9 +17,8 @@ func IntializeDatabase(s *models.APIService, DB_ID string, PAGE_ID string)(strin
 	if DB_ID != ""{
 		_, err := s.Client.FindDatabaseByID(context.Background(), DB_ID)
 		if err == nil{
-			return "", nil
+			return DB_ID, nil
 		}
-		return DB_ID, nil
 	}
 
 	database_params := createDatabaseParams(PAGE_ID)
