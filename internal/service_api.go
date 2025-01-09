@@ -43,11 +43,6 @@ func UpdateDatabaseEntry(s *models.APIService, PAGE_ID string, code string, lang
 }
 
 func createDatabaseQuery(filter string)(notion.DatabaseQuery){
-	// database_query_filter := createDatabaseQueryFilter(filter)
-	// return notion.DatabaseQuery{
-	// 	Filter: &database_query_filter,
-	// }
-
 	return notion.DatabaseQuery{
 		Filter: &notion.DatabaseQueryFilter{
 			Property: "File Name",

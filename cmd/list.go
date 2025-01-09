@@ -12,6 +12,33 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func printQueryResponse(dbQueryResponse *notion.DatabaseQueryResponse) {
+	if dbQueryResponse == nil || len(dbQueryResponse.Results) == 0 {
+		fmt.Println("No results found.")
+		return
+	}
+
+	fmt.Println("Query Results:")
+	fmt.Println("====================")
+
+	for i, page := range dbQueryResponse.Results {
+		pageProperties := page.Properties.(notion.DatabasePageProperties)
+
+		note := pageProperties["Note"].RichText[0].Text.Content
+		timestamp := pageProperties["Timestamp"].Date.Start
+		category := pageProperties["Category"].Select.Name
+		url := page.URL
+
+		// Print out the result neatly
+		fmt.Printf("%d.\n", i+1)
+		fmt.Printf("  Note:      %s\n", note)
+		fmt.Printf("  Timestamp: %s\n", timestamp)
+		fmt.Printf("  Category:  %s\n", category)
+		fmt.Printf("  URL:       %s\n", url)
+		fmt.Println("--------------------")
+	}
+}
+
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
@@ -33,10 +60,8 @@ var listCmd = &cobra.Command{
 			fmt.Printf("Error %s", err)
 			return
 		}
-		for _, page := range dbQueryResponse.Results{
-			page_properties := page.Properties.(notion.DatabasePageProperties)
-			fmt.Println(page_properties["Note"].RichText[0].Text.Content)
-		}
+		printQueryResponse(dbQueryResponse)
+		
 	},
 }
 
