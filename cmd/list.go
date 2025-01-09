@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/MustafaLo/Noted/internal"
+	"github.com/MustafaLo/Noted/models"
 	"github.com/spf13/cobra"
 )
 
@@ -18,6 +19,18 @@ var listCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 		activeFileMetaData, err:= internal.GetCurrentFileMetadata()
+		if err != nil{
+			fmt.Printf("Error %s", err)
+			return
+		}
+
+		client := cmd.Context().Value("client").(*models.APIService)
+		database_id := cmd.Context().Value("databaseID").(string)
+
+		dbQueryResponse, err := internal.FilterDatabase(client, database_id, activeFileMetaData.FileName)
+		for _, page := range dbQueryResponse.Results{
+			fmt.Println(page.URL)
+		}
 	},
 }
 

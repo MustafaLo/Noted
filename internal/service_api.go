@@ -3,9 +3,19 @@ package internal
 import (
 	"context"
 	"fmt"
+
 	"github.com/MustafaLo/Noted/models"
 	"github.com/dstotijn/go-notion"
 )
+
+func FilterDatabase(s *models.APIService, DB_ID string, query string)(*notion.DatabaseQueryResponse, error){
+	database_query := createDatabaseQuery(query)
+	query_response, err := s.Client.QueryDatabase(context.Background(), DB_ID, &database_query)
+	if err != nil{
+		return nil, fmt.Errorf("error filter database %w", err)
+	}
+	return &query_response, nil
+}
 
 func CreateDatabaseEntry(s *models.APIService, DB_ID string, fileMetaData models.FileMetadata, note string, lines string, category string)(string, error){
 	database_page_properties := createDatabasePageProperties(fileMetaData, note, lines, category)
@@ -30,6 +40,35 @@ func UpdateDatabaseEntry(s *models.APIService, PAGE_ID string, code string, lang
 	}
 	fmt.Println("Code block successfully added to the Notion page!")
 	return nil
+}
+
+func createDatabaseQuery(filter string)(notion.DatabaseQuery){
+	// database_query_filter := createDatabaseQueryFilter(filter)
+	// return notion.DatabaseQuery{
+	// 	Filter: &database_query_filter,
+	// }
+
+	return notion.DatabaseQuery{
+		Filter: &notion.DatabaseQueryFilter{
+			Property: "File Name",
+			DatabaseQueryPropertyFilter: notion.DatabaseQueryPropertyFilter{
+				Title: &notion.TextPropertyFilter{
+					Equals: filter,
+				},
+			},
+		},
+	}
+}
+
+func createDatabaseQueryFilter(filter string)(notion.DatabaseQueryFilter){
+	return notion.DatabaseQueryFilter{
+		Property: "File Name",
+		DatabaseQueryPropertyFilter: notion.DatabaseQueryPropertyFilter{
+			Title: &notion.TextPropertyFilter{
+				Equals: filter,
+			},
+		},
+	}
 }
 
 func createHeadingBlock(content string)(notion.Heading2Block){
