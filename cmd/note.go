@@ -95,7 +95,12 @@ func getCodeBlock(filePath string, lines string)(string, error){
 		return "", fmt.Errorf("error reading file: %w", err)
 	}
 
-	return strings.Join(codeLines, "\n"), nil
+	codeBlock := strings.Join(codeLines, "\n")
+	if strings.TrimSpace(codeBlock) == ""{
+		return "", fmt.Errorf("code block specified was empty")
+	}
+
+	return codeBlock, nil
 }
 
 
@@ -150,7 +155,7 @@ var noteCmd = &cobra.Command{
 			if err != nil{
 				fmt.Printf("Error: %s", err)
 				return
-			}
+			} 
 			err = internal.UpdateDatabaseEntry(client, pageID, codeBlock, activeFileMetaData.Language, note)
 			if err != nil{
 				fmt.Printf("Error: %s", err)

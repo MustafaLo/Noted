@@ -44,7 +44,8 @@ func printQueryResponse(dbQueryResponse *notion.DatabaseQueryResponse) {
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "View notes on active file",
-	Long: ``,
+	Long: `Use the list command to retrieve all your notes on your current active file
+	Example Usage: ./noted list`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		activeFileMetaData, err:= internal.GetCurrentFileMetadata()
@@ -62,7 +63,6 @@ var listCmd = &cobra.Command{
 			return
 		}
 		printQueryResponse(dbQueryResponse)
-		
 	},
 }
 
