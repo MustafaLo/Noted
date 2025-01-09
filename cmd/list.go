@@ -8,6 +8,7 @@ import (
 
 	"github.com/MustafaLo/Noted/internal"
 	"github.com/MustafaLo/Noted/models"
+	"github.com/dstotijn/go-notion"
 	"github.com/spf13/cobra"
 )
 
@@ -33,7 +34,8 @@ var listCmd = &cobra.Command{
 			return
 		}
 		for _, page := range dbQueryResponse.Results{
-			fmt.Println(page.URL)
+			page_properties := page.Properties.(notion.DatabasePageProperties)
+			fmt.Println(page_properties["Note"].RichText[0].Text.Content)
 		}
 	},
 }
