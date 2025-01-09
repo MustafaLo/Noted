@@ -28,6 +28,10 @@ var listCmd = &cobra.Command{
 		database_id := cmd.Context().Value("databaseID").(string)
 
 		dbQueryResponse, err := internal.FilterDatabase(client, database_id, activeFileMetaData.FileName)
+		if err != nil{
+			fmt.Printf("Error %s", err)
+			return
+		}
 		for _, page := range dbQueryResponse.Results{
 			fmt.Println(page.URL)
 		}
