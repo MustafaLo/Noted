@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/MustafaLo/Noted/internal"
 	"github.com/MustafaLo/Noted/models"
@@ -18,24 +19,24 @@ func printQueryResponse(dbQueryResponse *notion.DatabaseQueryResponse) {
 		return
 	}
 
-	fmt.Println("Query Results:")
-	fmt.Println("====================")
+	fmt.Println("\nQuery Results:")
+	fmt.Println(strings.Repeat("=", 50))
 
 	for i, page := range dbQueryResponse.Results {
 		pageProperties := page.Properties.(notion.DatabasePageProperties)
 
 		note := pageProperties["Note"].RichText[0].Text.Content
-		timestamp := pageProperties["Timestamp"].Date.Start
+		timestamp := pageProperties["Timestamp"].CreatedTime.Local().Format("Jan 2, 2006 3:04 PM")
 		category := pageProperties["Category"].Select.Name
 		url := page.URL
 
-		// Print out the result neatly
-		fmt.Printf("%d.\n", i+1)
-		fmt.Printf("  Note:      %s\n", note)
-		fmt.Printf("  Timestamp: %s\n", timestamp)
-		fmt.Printf("  Category:  %s\n", category)
-		fmt.Printf("  URL:       %s\n", url)
-		fmt.Println("--------------------")
+		// Print out the result neatly with alignment and borders
+		fmt.Printf("\n%d. %-10s\n", i+1, strings.Repeat("-", 40))
+		fmt.Printf("| %-10s | %s\n", "Note", note)
+		fmt.Printf("| %-10s | %s\n", "Timestamp", timestamp)
+		fmt.Printf("| %-10s | %s\n", "Category", category)
+		fmt.Printf("| %-10s | %s\n", "URL", url)
+		fmt.Printf("%-10s\n", strings.Repeat("-", 50))
 	}
 }
 
