@@ -18,6 +18,7 @@ import (
 )
 
 func getAllNotes(dbQueryResponse *notion.DatabaseQueryResponse)(string){
+	fmt.Println("Generating Insights...")
 	var note_block string
 	for i, page := range dbQueryResponse.Results{
 		pageProperties := page.Properties.(notion.DatabasePageProperties)
@@ -43,6 +44,14 @@ func generateInsights(note_block string)(error){
 			Message: message,
 		},
 	)
+	if err != nil{
+		return fmt.Errorf("error making Cohere chat request: %w", err)
+	}
+	if resp == nil || resp.Text == ""{
+		return fmt.Errorf("empty or invalid request from Cohere")
+	}
+
+	fmt.Println("\n", resp.Text)
 	return nil
 }	
 
