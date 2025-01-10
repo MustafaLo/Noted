@@ -45,7 +45,8 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "View notes on active file",
 	Long: `Use the list command to retrieve all your notes on your current active file
-	Example Usage: ./noted list`,
+	Example Usage: ./noted list
+	Make sure to use quotation marks for multi word categories!`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		activeFileMetaData, err:= internal.GetCurrentFileMetadata()

@@ -126,9 +126,17 @@ var noteCmd = &cobra.Command{
 	* --category (-c): Optional flag you can use to specify an existing or new category that your note falls under
 	   * Example Usage:
 			- ./noted note -m "Example note" -c "Syntax"
-			- ./noted note -m "Example note" -c "Design"`,
+			- ./noted note -m "Example note" -c "Design"
+			
+	
+	Make sure to use quotation marks when wrapping your note`,
+	
+	
 
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("Message: ", note)
+		fmt.Println("Category: ", category)
+
 		activeFileMetaData, err := internal.GetCurrentFileMetadata()
 		if err != nil{
 			fmt.Printf("Error %s", err)
@@ -170,8 +178,8 @@ var noteCmd = &cobra.Command{
 func init() {
 	noteCmd.Flags().StringVarP(&note, "message", "m", "", "Message (required)")
 	noteCmd.MarkFlagRequired("message")
-	noteCmd.Flags().StringVarP(&category, "category", "c", "None", "Category of note")
-	noteCmd.Flags().StringVarP(&lines, "lines", "l", "", "Lines to highlight")
+	noteCmd.Flags().StringVarP(&category, "category", "c", "None", "Category of note (Optional)")
+	noteCmd.Flags().StringVarP(&lines, "lines", "l", "", "Lines to highlight (Optional)")
 
 	rootCmd.AddCommand(noteCmd)
 }
