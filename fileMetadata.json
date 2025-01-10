@@ -1,10 +1,10 @@
 {
-    "fileName": "insights.go",
-    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/cmd/insights.go",
+    "fileName": "note.go",
+    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/cmd/note.go",
     "lines": null,
-    "timestamp": "2025-01-10T03:57:29.197Z",
+    "timestamp": "2025-01-10T17:52:33.434Z",
     "language": "go",
     "workspace": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted",
-    "fileSize": 2480,
-    "lastModified": "2025-01-10T03:57:28.624Z"
+    "fileSize": 4727,
+    "lastModified": "2025-01-10T17:52:33.204Z"
 }

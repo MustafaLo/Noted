@@ -45,9 +45,16 @@ func setLines(highlighted_start int, highlighted_end int)(string, error){
 }
 
 func splitLineParts(line_range string)(int, int){
-	parts := strings.Split(line_range, "-")
-	start, _ := strconv.Atoi(parts[0])
-	end, _ := strconv.Atoi(parts[1])
+	var start int
+	var end int
+	if strings.Contains(line_range, "-"){
+		parts := strings.Split(line_range, "-")
+		start, _ = strconv.Atoi(parts[0])
+		end, _ = strconv.Atoi(parts[1])
+	} else {
+		start, _ = strconv.Atoi(line_range)
+		end = start
+	}
 	return start, end
 }
 
@@ -134,8 +141,6 @@ var noteCmd = &cobra.Command{
 	
 
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Message: ", note)
-		fmt.Println("Category: ", category)
 
 		activeFileMetaData, err := internal.GetCurrentFileMetadata()
 		if err != nil{
