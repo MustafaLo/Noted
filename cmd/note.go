@@ -119,26 +119,8 @@ var noteCmd = &cobra.Command{
 	Use:   "note",
 	Short: "Write notes about your code",
 	Long: `Use the note command to write notes on highlighted portions of your code.
-	Subcommands:
-	* --message (-m): Required flag that you should use to specify the note you'd like to write
-	    * Example Usage: 
-			- ./noted note -m "Example note"
+	`,
 
-	* --lines (-l): Optional flag you can use to specify the range of your code block to comment on. The Current File Tracker 
-					Extension will automatically detect highlighted code blocks on your active file
-	   * Example Usage: 
-	        - ./noted note -m "Example note" -l 15-20
-			- ./noted note -m "Example note" -l 25
-		
-	* --category (-c): Optional flag you can use to specify an existing or new category that your note falls under
-	   * Example Usage:
-			- ./noted note -m "Example note" -c "Syntax"
-			- ./noted note -m "Example note" -c "Design"
-			
-	
-	Make sure to use quotation marks when wrapping your note`,
-	
-	
 
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -180,11 +162,36 @@ var noteCmd = &cobra.Command{
 }
 
 
+
+
+
 func init() {
 	noteCmd.Flags().StringVarP(&note, "message", "m", "", "Message (required)")
 	noteCmd.MarkFlagRequired("message")
 	noteCmd.Flags().StringVarP(&category, "category", "c", "None", "Category of note (Optional)")
 	noteCmd.Flags().StringVarP(&lines, "lines", "l", "", "Lines to highlight (Optional)")
+
+
+	noteCmd.SetHelpTemplate(`
+
+Usage:
+	./noted note [flags]
+
+Description:
+	Use the 'note' command to create notes on your code. Highlight lines or 
+	specify a range using the '--lines' flag. All notes will be categorized 
+	and stored in Notion.
+
+Flags:
+	-m, --message   (Required) Specify the note you'd like to write.
+	-l, --lines     (Optional) Specify the range of lines to comment on.
+	-c, --category  (Optional) Specify a category for your note.
+
+Examples:
+	./noted note -m "Example note"
+	./noted note -m "Fix bug in loop" -l 10-20
+	./noted note -m "Refactor suggestion" -c "Improvement"
+	 `+ "\n") 
 
 	rootCmd.AddCommand(noteCmd)
 }
