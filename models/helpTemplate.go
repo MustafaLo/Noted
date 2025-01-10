@@ -1,9 +1,9 @@
 package models
 
-type Helptemplate struct{
+type HelpTemplate struct{
 	Usage string
 	Description string
-	Flags string
-	Examples string
-	Notes string
+	Flags []string
+	Examples []string
+	Notes []string
 }

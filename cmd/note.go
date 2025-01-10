@@ -110,11 +110,31 @@ func getCodeBlock(filePath string, lines string)(string, error){
 	return codeBlock, nil
 }
 
+func createHelpTemplate()(models.HelpTemplate){
+	return models.HelpTemplate{
+		Usage: "./noted note [flags]",
+		Description: "Use the 'note' command to create notes on your code. Highlight lines or specify a range using the '--lines' flag. All notes will be categorized and stored in Notion.",
+		Flags: []string {
+			"-m, --message   (Required) Specify the note you'd like to write.",
+			"-l, --lines     (Optional) Specify the range of lines to comment on.",
+			"-c, --category  (Optional) Specify a category for your note.",
+		},
+		Examples: []string{
+			"./noted note -m \"Example note\"",
+			"./noted note -m \"Fix bug in loop\" -l 10-20",
+			"./noted note -m \"Refactor suggestion\" -c \"Improvement\"",
+		},
+		Notes: []string{
+			"Use quotation marks (\" \") to wrap your note message.",
+			"Ensure the Current File Tracker Extension is active to detect highlighted code blocks automatically.",
+		},
+	}
+}
+
 
 var note string
 var category string
 var lines string
-
 var noteCmd = &cobra.Command{
 	Use:   "note",
 	Short: "Write notes about your code",
@@ -163,35 +183,13 @@ var noteCmd = &cobra.Command{
 
 
 
-
-
 func init() {
 	noteCmd.Flags().StringVarP(&note, "message", "m", "", "Message (required)")
 	noteCmd.MarkFlagRequired("message")
 	noteCmd.Flags().StringVarP(&category, "category", "c", "None", "Category of note (Optional)")
 	noteCmd.Flags().StringVarP(&lines, "lines", "l", "", "Lines to highlight (Optional)")
 
-
-	noteCmd.SetHelpTemplate(`
-
-Usage:
-	./noted note [flags]
-
-Description:
-	Use the 'note' command to create notes on your code. Highlight lines or 
-	specify a range using the '--lines' flag. All notes will be categorized 
-	and stored in Notion.
-
-Flags:
-	-m, --message   (Required) Specify the note you'd like to write.
-	-l, --lines     (Optional) Specify the range of lines to comment on.
-	-c, --category  (Optional) Specify a category for your note.
-
-Examples:
-	./noted note -m "Example note"
-	./noted note -m "Fix bug in loop" -l 10-20
-	./noted note -m "Refactor suggestion" -c "Improvement"
-	 `+ "\n") 
-
+	noteCmdHelpTemplate := createHelpTemplate()
+	noteCmd.SetHelpTemplate(internal.GenerateHelpMessage(noteCmdHelpTemplate))
 	rootCmd.AddCommand(noteCmd)
 }
