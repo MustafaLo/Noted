@@ -51,7 +51,10 @@ func generateInsights(note_block string)(error){
 		return fmt.Errorf("empty or invalid request from Cohere")
 	}
 
-	fmt.Println("\n", resp.Text)
+	fmt.Println("\n========== Insights Generated ==========")
+	fmt.Println(resp.Text)
+	fmt.Println("========================================")
+
 	return nil
 }	
 
