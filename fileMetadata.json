@@ -1,10 +1,10 @@
 {
-    "fileName": "test.py",
-    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/tests/test.py",
+    "fileName": "insights.go",
+    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/cmd/insights.go",
     "lines": null,
-    "timestamp": "2025-01-10T03:05:52.327Z",
-    "language": "python",
+    "timestamp": "2025-01-10T03:32:55.351Z",
+    "language": "go",
     "workspace": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted",
-    "fileSize": 516,
-    "lastModified": "2025-01-04T01:04:45.905Z"
+    "fileSize": 2116,
+    "lastModified": "2025-01-10T03:32:51.061Z"
 }
