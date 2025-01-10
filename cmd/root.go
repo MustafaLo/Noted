@@ -49,6 +49,7 @@ examples and usage of using your application. For example:`,
 
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		envMap, err := internal.LoadEnv(); 
+		
 		if err != nil{
 			fmt.Println(err)
 			os.Exit(1)

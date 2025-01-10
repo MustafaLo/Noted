@@ -1,40 +1,57 @@
 /*
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/MustafaLo/Noted/internal"
+	"github.com/MustafaLo/Noted/models"
+	"github.com/dstotijn/go-notion"
 	"github.com/spf13/cobra"
 )
 
-// insightsCmd represents the insights command
+func getAllNotes(dbQueryResponse *notion.DatabaseQueryResponse)(string){
+	var note_block string
+	for i, page := range dbQueryResponse.Results{
+		pageProperties := page.Properties.(notion.DatabasePageProperties)
+		note_block += fmt.Sprintf("Note %d: %s. ", i, pageProperties["Note"].RichText[0].Text.Content)
+	}
+	return note_block
+}
+
 var insightsCmd = &cobra.Command{
 	Use:   "insights",
 	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Long: ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("insights called")
+		activeFileMetaData, err:= internal.GetCurrentFileMetadata()
+		if err != nil{
+			fmt.Printf("Error %s", err)
+			return
+		}
+		client := cmd.Context().Value("client").(*models.APIService)
+		database_id := cmd.Context().Value("databaseID").(string)
+
+		dbQueryResponse, err := internal.FilterDatabase(client, database_id, activeFileMetaData.FileName)
+		if err != nil{
+			fmt.Printf("Error %s", err)
+			return
+		} else if (dbQueryResponse == nil || len(dbQueryResponse.Results) == 0){
+			fmt.Printf("No insights found")
+			return
+		}
+		notes := getAllNotes(dbQueryResponse)
+		if strings.TrimSpace(notes) == ""{
+			fmt.Printf("No insights found")
+			return
+		}
+		fmt.Println(notes)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(insightsCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// insightsCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// insightsCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
