@@ -93,5 +93,19 @@ var insightsCmd = &cobra.Command{
 }
 
 func init() {
+	insightsCmdHelpTemplate := internal.CreateHelpTemplate(
+		"~~~~~~~~~~~~~~~~~ Insights Help ~~~~~~~~~~~~~~~~~",
+		"./noted insights",
+		"Use the 'insights' command to see AI generated summarizations of your notes for your current active file",
+		[]string{},
+		[]string{
+			"./noted insights",
+		},
+		[]string{
+			"You MUST create your own Cohere API Key in order to use this flag",
+			"Insert your api key into your env file as \"COHERE_API_KEY=Insert API Key\"",
+		},
+	)
+	insightsCmd.SetHelpTemplate(internal.GenerateHelpMessage(insightsCmdHelpTemplate))
 	rootCmd.AddCommand(insightsCmd)
 }
