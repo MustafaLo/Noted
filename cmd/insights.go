@@ -52,8 +52,8 @@ func generateInsights(note_block string)(error){
 	}
 
 	fmt.Println("\n========== Insights Generated ==========")
-	fmt.Println(resp.Text)
-	fmt.Println("========================================")
+	fmt.Println("\n" + resp.Text)
+	fmt.Println("\n========================================")
 
 	return nil
 }	
