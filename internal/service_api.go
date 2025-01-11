@@ -9,15 +9,17 @@ import (
 )
 
 func FilterDatabase(s *models.APIService, DB_ID string, query string)(*notion.DatabaseQueryResponse, error){
+	fmt.Println("Retrieving Notes...")
 	database_query := createDatabaseQuery(query)
 	query_response, err := s.Client.QueryDatabase(context.Background(), DB_ID, &database_query)
 	if err != nil{
-		return nil, fmt.Errorf("error filter database %w", err)
+		return nil, fmt.Errorf("error retrieving results %w", err)
 	}
 	return &query_response, nil
 }
 
 func CreateDatabaseEntry(s *models.APIService, DB_ID string, fileMetaData models.FileMetadata, note string, lines string, category string)(string, error){
+	fmt.Println("Creating Page...")
 	database_page_properties := createDatabasePageProperties(fileMetaData, note, lines, category)
 	page_parameters := createPageParams(DB_ID, database_page_properties)
 	page, err := s.Client.CreatePage(context.Background(), page_parameters)
@@ -25,7 +27,7 @@ func CreateDatabaseEntry(s *models.APIService, DB_ID string, fileMetaData models
 		return "", fmt.Errorf("error creating page: %w", err)
 	}
 
-	fmt.Println("Page created successfully: ", page.URL)
+	fmt.Println("\nPage created successfully: ", page.URL)
 	return page.ID, nil
 }
 
@@ -38,7 +40,6 @@ func UpdateDatabaseEntry(s *models.APIService, PAGE_ID string, code string, lang
 	if err != nil {
 		return fmt.Errorf("failed to append code block: %w", err)
 	}
-	fmt.Println("Code block successfully added to the Notion page!")
 	return nil
 }
 

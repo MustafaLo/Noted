@@ -18,7 +18,6 @@ import (
 )
 
 func getAllNotes(dbQueryResponse *notion.DatabaseQueryResponse)(string){
-	fmt.Println("Generating Insights...")
 	var note_block string
 	for i, page := range dbQueryResponse.Results{
 		pageProperties := page.Properties.(notion.DatabasePageProperties)
@@ -28,6 +27,7 @@ func getAllNotes(dbQueryResponse *notion.DatabaseQueryResponse)(string){
 }
 
 func generateInsights(note_block string)(error){
+	fmt.Println("Generating Insights...")
 	envMap, err := internal.LoadEnv(); 
 	if err != nil{
 		return err
