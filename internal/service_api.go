@@ -55,17 +55,6 @@ func createDatabaseQuery(filter string)(notion.DatabaseQuery){
 	}
 }
 
-func createDatabaseQueryFilter(filter string)(notion.DatabaseQueryFilter){
-	return notion.DatabaseQueryFilter{
-		Property: "File Name",
-		DatabaseQueryPropertyFilter: notion.DatabaseQueryPropertyFilter{
-			Title: &notion.TextPropertyFilter{
-				Equals: filter,
-			},
-		},
-	}
-}
-
 func createHeadingBlock(content string)(notion.Heading2Block){
 	return notion.Heading2Block{
 		RichText: []notion.RichText{{Text: &notion.Text{Content: content}}},
