@@ -1,31 +1,24 @@
-FROM golang:alpine AS builder
+### First Stage
 
-ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
+# Build and run in a single stage
+### First Stage
+FROM golang:alpine AS builder
 
 WORKDIR /app
 
-# Copy the Go modules and dependencies first for caching
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy the rest of the application files
 COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o noted .
 
-
-ARG CGO_ENABLED
-ENV CGO_ENABLED=${CGO_ENABLED}
-
-# Build the application
-RUN go build -o noted
-
+### Second Stage
 FROM alpine:latest
-WORKDIR /root/
 
-# Copy the built binary from the builder stage
+WORKDIR /app/
+
 COPY --from=builder /app/noted .
+COPY example.env /app/example.env
 
-# Add an example.env file for the user
-COPY example.env /root/example.env
-
-# Command to run the CLI tool
 ENTRYPOINT ["./noted"]
+

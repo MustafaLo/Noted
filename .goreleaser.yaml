@@ -35,12 +35,13 @@ archives:
 
 dockers:
   - image_templates:
-      - "mustafalo/noted-cli:{{ .Version }}"
-      - "mustafalo/noted-cli:latest"
+      - "mustafalo/{{ .ProjectName }}:{{ .Version }}"
+      - "mustafalo/{{ .ProjectName }}:latest"
     dockerfile: Dockerfile
     build_flag_templates:
-      - "--build-arg CGO_ENABLED=0"
-    goos: linux
+      - --build-arg EXAMPLE_ENV=example.env
+    skip_push: false
+
 
 changelog:
   sort: asc

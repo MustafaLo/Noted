@@ -1,8 +1,8 @@
 tests
 .env
-example.env
 noted
 .vscode/
 fileMetadata.json
+
 # Added by goreleaser init:
 dist/
