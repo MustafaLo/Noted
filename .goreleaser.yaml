@@ -37,10 +37,9 @@ dockers:
   - image_templates:
       - "mustafalo/{{ .ProjectName }}:{{ .Version }}"
       - "mustafalo/{{ .ProjectName }}"
-    dockerfile: Dockerfile
+    dockerfile: Dockerfile.releaser
     goos: linux
-    goarch: amd64
-    skip_push: false
+    goarch: arm64
 
 changelog:
   sort: asc
