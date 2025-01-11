@@ -52,7 +52,7 @@ func formatParagraph(paragraph string)(string){
 
 func formatList(items []string)(string){
 	if len(items) == 0{
-		return "None\n"
+		return " None\n"
 	}
 	var res string
 	for _, item := range items{

@@ -68,5 +68,18 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
+	listCmdHelpTemplate := internal.CreateHelpTemplate(
+		"~~~~~~~~~~~~~~~~~ List Help ~~~~~~~~~~~~~~~~~",
+		"./noted list",
+		"Use the 'list' command to list out all created notes for your current active file",
+		[]string{},
+		[]string{
+			"./noted list",
+		},
+		[]string{
+			"This command only lists notes for your active file previously created",
+		},
+	)
+	listCmd.SetHelpTemplate(internal.GenerateHelpMessage(listCmdHelpTemplate))
 	rootCmd.AddCommand(listCmd)
 }

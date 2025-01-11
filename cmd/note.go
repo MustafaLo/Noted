@@ -186,7 +186,7 @@ func init() {
 	noteCmd.Flags().StringVarP(&lines, "lines", "l", "", "Lines to highlight (Optional)")
 
 	noteCmdHelpTemplate := internal.CreateHelpTemplate(
-		"========== Note Help ==========",
+		"~~~~~~~~~~~~~~~~~ Note Help ~~~~~~~~~~~~~~~~~",
 		"./noted note [flags]",
 		"Use the 'note' command to create notes on your code. Highlight lines or specify a range using the '--lines' flag. All notes will be categorized and stored in Notion.",
 		[]string{
