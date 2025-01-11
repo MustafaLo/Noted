@@ -10,7 +10,8 @@ import (
 
 func GenerateHelpMessage(template models.HelpTemplate)(string){
 	return fmt.Sprintf(`
-	
+%s
+
 Usage:
  %s
 
@@ -25,12 +26,13 @@ Examples:
 	
 Notes:
 %s
-	`, template.Usage, formatParagraph(template.Description), formatList(template.Flags), formatList(template.Examples), formatList(template.Notes))
+	`, template.Heading, template.Usage, formatParagraph(template.Description), formatList(template.Flags), formatList(template.Examples), formatList(template.Notes))
 
 }
 
-func CreateHelpTemplate(usage string, description string, flags []string, examples []string, notes []string)(models.HelpTemplate){
+func CreateHelpTemplate(heading string, usage string, description string, flags []string, examples []string, notes []string)(models.HelpTemplate){
 	return models.HelpTemplate{
+		Heading: heading,
 		Usage: usage,
 		Description: description,
 		Flags: flags,

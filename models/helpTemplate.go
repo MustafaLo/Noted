@@ -1,6 +1,7 @@
 package models
 
 type HelpTemplate struct{
+	Heading string
 	Usage string
 	Description string
 	Flags []string

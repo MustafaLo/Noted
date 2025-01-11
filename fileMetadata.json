@@ -1,10 +1,10 @@
 {
-    "fileName": "note.go",
-    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/cmd/note.go",
+    "fileName": "load_help.go",
+    "filePath": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted/internal/load_help.go",
     "lines": null,
-    "timestamp": "2025-01-11T01:24:59.498Z",
+    "timestamp": "2025-01-11T01:27:56.354Z",
     "language": "go",
     "workspace": "/Users/mustafalonandwala/Documents/Mustafa Lonandwala/Coding Projects/Noted",
-    "fileSize": 5741,
-    "lastModified": "2025-01-11T01:24:58.352Z"
+    "fileSize": 1062,
+    "lastModified": "2025-01-11T01:27:37.405Z"
 }
