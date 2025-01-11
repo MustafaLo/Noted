@@ -82,16 +82,32 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.Noted.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
+
+	rootCmdHelpTemplate := internal.CreateHelpTemplate(
+		"~~~~~~~~~~~~~~~~~ Root Help ~~~~~~~~~~~~~~~~~~~",
+		"No default behavior (see below for flags)",
+		"Noted: A Notion-integrated CLI for effortless, in-context educational notes during development.",
+		[]string{
+			"note: Write notes about your code",
+			"list: View notes about your code",
+			"insights: Generate AI summaries about your notes",
+		},
+		[]string{
+			"Run ./noted note -h OR ./noted note --help for more information",
+			"Run ./noted list -h OR ./noted list --help for more information",
+			"Run ./noted insights -h OR ./noted insights --help for more information",	
+		},
+		[]string{
+			"Make sure to download the 'Track Current File' extension and run from your command palette ('Current File Tracker')",
+			"Follow the directions on 'developers.notion.com/docs/create-a-notion-integration': ",
+			"   - Create a Notion API Key (developers.notion.com) and insert into your env file as \"NOTION_API_KEY=\"",
+			"   - Share a Notion Page with your newly created integration",
+			"   - Grab that page id (developers.notion.com/docs/working-with-page-content) and insert into your env file as \"NOTION_PAGE_ID\"",
+		},
+	)
+	rootCmd.SetHelpTemplate(internal.GenerateHelpMessage(rootCmdHelpTemplate))
 }
 
 

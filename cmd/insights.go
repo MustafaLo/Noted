@@ -103,7 +103,7 @@ func init() {
 		},
 		[]string{
 			"You MUST create your own Cohere API Key in order to use this flag",
-			"Insert your api key into your env file as \"COHERE_API_KEY=Insert API Key\"",
+			"Insert your api key into your env file as \"COHERE_API_KEY=\"",
 		},
 	)
 	insightsCmd.SetHelpTemplate(internal.GenerateHelpMessage(insightsCmdHelpTemplate))

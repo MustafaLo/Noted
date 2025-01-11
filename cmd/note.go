@@ -188,7 +188,7 @@ func init() {
 	noteCmdHelpTemplate := internal.CreateHelpTemplate(
 		"~~~~~~~~~~~~~~~~~ Note Help ~~~~~~~~~~~~~~~~~",
 		"./noted note [flags]",
-		"Use the 'note' command to create notes on your code. Highlight lines or specify a range using the '--lines' flag. All notes will be categorized and stored in Notion.",
+		"Use the 'note' command to create notes on your code for your current active file . Highlight lines or specify a range using the '--lines' flag. All notes will be categorized and stored in Notion.",
 		[]string{
 			"-m, --message   (Required) Specify the note you'd like to write.",
 			"-l, --lines     (Optional) Specify the range of lines to comment on.",

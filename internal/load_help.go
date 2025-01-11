@@ -26,6 +26,8 @@ Examples:
 	
 Notes:
 %s
+
+"~~~~~~~~~~~~~~~~~ Happy Note-Taking! ~~~~~~~~~~~~~~~~~~~"
 	`, template.Heading, template.Usage, formatParagraph(template.Description), formatList(template.Flags), formatList(template.Examples), formatList(template.Notes))
 
 }
