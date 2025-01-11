@@ -1,6 +1,6 @@
 version: 2
 
-project_name: noted
+project_name: noted-cli
 
 before:
   hooks:
@@ -36,12 +36,11 @@ archives:
 dockers:
   - image_templates:
       - "mustafalo/{{ .ProjectName }}:{{ .Version }}"
-      - "mustafalo/{{ .ProjectName }}:latest"
+      - "mustafalo/{{ .ProjectName }}"
     dockerfile: Dockerfile
-    build_flag_templates:
-      - --build-arg EXAMPLE_ENV=example.env
+    goos: linux
+    goarch: amd64
     skip_push: false
-
 
 changelog:
   sort: asc
