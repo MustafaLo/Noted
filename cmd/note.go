@@ -110,26 +110,26 @@ func getCodeBlock(filePath string, lines string)(string, error){
 	return codeBlock, nil
 }
 
-func createHelpTemplate()(models.HelpTemplate){
-	return models.HelpTemplate{
-		Usage: "./noted note [flags]",
-		Description: "Use the 'note' command to create notes on your code. Highlight lines or specify a range using the '--lines' flag. All notes will be categorized and stored in Notion.",
-		Flags: []string {
-			"-m, --message   (Required) Specify the note you'd like to write.",
-			"-l, --lines     (Optional) Specify the range of lines to comment on.",
-			"-c, --category  (Optional) Specify a category for your note.",
-		},
-		Examples: []string{
-			"./noted note -m \"Example note\"",
-			"./noted note -m \"Fix bug in loop\" -l 10-20",
-			"./noted note -m \"Refactor suggestion\" -c \"Improvement\"",
-		},
-		Notes: []string{
-			"Use quotation marks (\" \") to wrap your note message.",
-			"Ensure the Current File Tracker Extension is active to detect highlighted code blocks automatically.",
-		},
-	}
-}
+// func createHelpTemplate()(models.HelpTemplate){
+// 	return models.HelpTemplate{
+// 		Usage: "./noted note [flags]",
+// 		Description: "Use the 'note' command to create notes on your code. Highlight lines or specify a range using the '--lines' flag. All notes will be categorized and stored in Notion.",
+// 		Flags: []string {
+// 			"-m, --message   (Required) Specify the note you'd like to write.",
+// 			"-l, --lines     (Optional) Specify the range of lines to comment on.",
+// 			"-c, --category  (Optional) Specify a category for your note.",
+// 		},
+// 		Examples: []string{
+// 			"./noted note -m \"Example note\"",
+// 			"./noted note -m \"Fix bug in loop\" -l 10-20",
+// 			"./noted note -m \"Refactor suggestion\" -c \"Improvement\"",
+// 		},
+// 		Notes: []string{
+// 			"Use quotation marks (\" \") to wrap your note message.",
+// 			"Ensure the Current File Tracker Extension is active to detect highlighted code blocks automatically.",
+// 		},
+// 	}
+// }
 
 
 var note string
@@ -138,10 +138,6 @@ var lines string
 var noteCmd = &cobra.Command{
 	Use:   "note",
 	Short: "Write notes about your code",
-	Long: `Use the note command to write notes on highlighted portions of your code.
-	`,
-
-
 	Run: func(cmd *cobra.Command, args []string) {
 
 		activeFileMetaData, err := internal.GetCurrentFileMetadata()
@@ -189,7 +185,24 @@ func init() {
 	noteCmd.Flags().StringVarP(&category, "category", "c", "None", "Category of note (Optional)")
 	noteCmd.Flags().StringVarP(&lines, "lines", "l", "", "Lines to highlight (Optional)")
 
-	noteCmdHelpTemplate := createHelpTemplate()
+	noteCmdHelpTemplate := internal.CreateHelpTemplate(
+		"./noted note [flags]",
+		"Use the 'note' command to create notes on your code. Highlight lines or specify a range using the '--lines' flag. All notes will be categorized and stored in Notion.",
+		[]string{
+			"-m, --message   (Required) Specify the note you'd like to write.",
+			"-l, --lines     (Optional) Specify the range of lines to comment on.",
+			"-c, --category  (Optional) Specify a category for your note.",
+		},
+		[]string{
+			"./noted note -m \"Example note\"",
+			"./noted note -m \"Fix bug in loop\" -l 10-20",
+			"./noted note -m \"Refactor suggestion\" -c \"Improvement\"",
+		},
+		[]string{
+			"Use quotation marks (\" \") to wrap your note message.",
+			"Ensure the Current File Tracker Extension is active to detect highlighted code blocks automatically.",
+		},
+	)
 	noteCmd.SetHelpTemplate(internal.GenerateHelpMessage(noteCmdHelpTemplate))
 	rootCmd.AddCommand(noteCmd)
 }
