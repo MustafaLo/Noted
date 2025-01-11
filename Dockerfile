@@ -11,6 +11,10 @@ RUN go mod download
 # Copy the rest of the application files
 COPY . .
 
+
+ARG CGO_ENABLED
+ENV CGO_ENABLED=${CGO_ENABLED}
+
 # Build the application
 RUN go build -o noted
 

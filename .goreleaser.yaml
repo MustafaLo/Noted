@@ -7,20 +7,20 @@ before:
     - go mod tidy
 
 builds:
-  - binary: "noted"
-    env:
-      - CGO_ENABLED=0
-    goos:
-      - linux
-      - windows
-      - darwin #macOS
-    goarch:
-      - amd64
-      - arm64
+- binary: "noted"
+  env:
+    - CGO_ENABLED=0
+  goos:
+    - linux
+    - windows
+    - darwin #macOS
+  goarch:
+    - amd64
+    - arm64
 
 archives:
   - format: tar.gz
-    # this name template makes the OS and Arch compatible with the results of `uname`.
+  # this name template makes the OS and Arch compatible with the results of `uname`.
     name_template: "{{ .ProjectName }}_{{.Version}}_{{.Os}}_{{.Arch}}"
     files:
       - README.md
@@ -28,25 +28,19 @@ archives:
       - example.env
     wrap_in_directory: true
 
-    # use zip for windows archives
+  # use zip for windows archives
     format_overrides:
       - goos: windows
         format: zip
-      - goos: linux
-        goarch: arm64
-        format: tar.xz
 
 dockers:
   - image_templates:
-    - "mustafalo/noted-cli:{{.Version}}"
-    - "mustafalo/noted-cli:latest"
-  dockerfile: Dockerfile
-  build_flag_templates:
-    - "--build-arg CGO_ENABLED=0"
-  goos: linux
-  goarch:
-    - amd64
-    - arm64
+      - "mustafalo/noted-cli:{{ .Version }}"
+      - "mustafalo/noted-cli:latest"
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - "--build-arg CGO_ENABLED=0"
+    goos: linux
 
 changelog:
   sort: asc
