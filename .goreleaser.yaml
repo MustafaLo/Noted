@@ -35,7 +35,7 @@ archives:
 
 
 brews:
-  - name: mustafalo
+  - name: noted
     homepage: https://github.com/MustafaLo/noted
     repository:
       owner: MustafaLo
