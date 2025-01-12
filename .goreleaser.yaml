@@ -33,6 +33,16 @@ archives:
       - goos: windows
         format: zip
 
+
+brews:
+  - name: mustafalo
+    homepage: https://github.com/MustafaLo/noted
+    tap:
+      owner: MustafaLo
+      tap: homebrew-mustafalo
+    commit_author:
+      name: mustafalonandwala
+      email: mustafalonandwala04@gmail.com
   
 # dockers:
 #   - image_templates:
