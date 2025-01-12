@@ -44,13 +44,14 @@ brews:
       name: mustafalonandwala
       email: mustafalonandwala04@gmail.com
   
-# dockers:
-#   - image_templates:
-#       - "mustafalo/{{ .ProjectName }}:{{ .Version }}"
-#       - "mustafalo/{{ .ProjectName }}"
-#     dockerfile: Dockerfile.releaser
-#     goos: linux
-#     goarch: arm64
+dockers:
+  - image_templates:
+      - "mustafalo/noted:{{ .Version }}"
+      - "mustafalo/noted:latest"
+    dockerfile: Dockerfile.releaser
+    goos: linux
+    goarch: arm64
+
 
 changelog:
   sort: asc

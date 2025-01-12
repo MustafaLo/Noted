@@ -1,4 +1,5 @@
-FROM alpine:3.17
-WORKDIR /app
+FROM alpine:latest
+WORKDIR /workdir
 COPY noted /usr/local/bin/noted
 ENTRYPOINT ["/usr/local/bin/noted"]
+
