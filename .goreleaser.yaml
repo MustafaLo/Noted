@@ -37,9 +37,9 @@ archives:
 brews:
   - name: mustafalo
     homepage: https://github.com/MustafaLo/noted
-    tap:
+    repository:
       owner: MustafaLo
-      tap: homebrew-mustafalo
+      name: homebrew-mustafalo
     commit_author:
       name: mustafalonandwala
       email: mustafalonandwala04@gmail.com
