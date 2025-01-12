@@ -7,8 +7,8 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"github.com/MustafaLo/Noted/internal"
-	"github.com/MustafaLo/Noted/models"
+	"github.com/MustafaLo/noted/internal"
+	"github.com/MustafaLo/noted/models"
 	"github.com/spf13/cobra"
 )
 

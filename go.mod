@@ -1,4 +1,4 @@
-module github.com/MustafaLo/Noted
+module github.com/MustafaLo/noted
 
 go 1.23.4
 

@@ -3,7 +3,7 @@ package internal
 import (
 	"fmt"
 	"strings"
-	"github.com/MustafaLo/Noted/models"
+	"github.com/MustafaLo/noted/models"
 )
 
 

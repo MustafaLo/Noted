@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/MustafaLo/Noted/models"
+	"github.com/MustafaLo/noted/models"
 	"github.com/dstotijn/go-notion"
 )
 

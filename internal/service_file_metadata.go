@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"github.com/MustafaLo/Noted/models"
+	"github.com/MustafaLo/noted/models"
 )
 
 
