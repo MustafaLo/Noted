@@ -8,6 +8,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o noted .
 
 ### Second Stage
 FROM alpine:latest
+
 # Use /workdir instead of /app to make it clearer this is for mounted files
 WORKDIR /workdir
 COPY --from=builder /app/noted /usr/local/bin/noted
