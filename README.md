@@ -20,8 +20,7 @@ Here are some instructions to get Noted working for you!
 
 ### Prerequisites
 
-1. Currently, this tool is made exclusively for VSCode users. Before running Noted, you should enable the 
-[Track Current File](https://marketplace.visualstudio.com/items?itemName=MustafaLo.currentfiletracker) extension which will generate metadata about your current active file.
+1. Currently, this tool is made exclusively for VSCode users. Enable the [Track Current File](https://marketplace.visualstudio.com/items?itemName=MustafaLo.currentfiletracker) extension which will generate metadata about your current active file.
 2. Generate your [Notion API Key](https://developers.notion.com/docs/create-a-notion-integration#getting-started)
     ```sh
     #Add to your .env file
@@ -106,4 +105,9 @@ This feature leverages Cohere's powerful AI to analyze your notes and provide pe
 ```bash
 noted insights --help
 ```
+## Roadmap
+Here are some future goals for Noted:
+[x] Support for syncing notes with Notion
 
+## License
+This project is distributed under the MIT License
