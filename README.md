@@ -14,6 +14,15 @@
   </p>
 </div>
 
+<!-- TAGS -->
+<div align="center">
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/MustafaLo/noted/release.yml)
+![Docker Pulls](https://img.shields.io/docker/pulls/mustafalo/noted)
+![Go](https://img.shields.io/badge/Go-00ADD8?logo=go&logoColor=white)
+![Homebrew](https://img.shields.io/badge/homebrew-mustafalo%2Fnoted-blue?logo=homebrew)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+</div>
+
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -42,8 +51,7 @@ Here are some instructions to get Noted working for you!
     NOTION_API_KEY=
     ```
 3. [Share a page](https://developers.notion.com/docs/create-a-notion-integration#give-your-integration-page-permissions) in your workspace
-with your newly created integration
-4. Save the [page's ID](https://developers.notion.com/docs/working-with-page-content#creating-a-page-with-content)
+    with your newly created integration and [save](https://developers.notion.com/docs/working-with-page-content#creating-a-page-with-content) the page's ID
     ```sh
     #Add to your .env file
     NOTION_PAGE_ID=
@@ -128,7 +136,7 @@ Here are some future goals for Noted:
 - [ ] Collaborative note-sharing between team members
 - [ ] Enhanced search functionality for notes within Notion
 
-Feel free to submit a suggestion by opening an issue in the [issues section](https://github.com/MustafaLo/noted/issues).
+Feel free to submit a suggestion by opening an issue in the [issues section](https://github.com/MustafaLo/noted/issues)!
 
 ## License
 This project is distributed under the MIT License
