@@ -127,8 +127,7 @@ v
 #### `insights`
 This feature leverages Cohere's powerful AI to analyze your notes and provide personalized insights and summaries. 
 > [!NOTE]
-> To use this command, you'll need a free Cohere API key, which you can get [here](https://cohere.com/)
-* Make sure to add to your .env file as `COHERE_API_KEY=`
+> To use this command, you'll need a free Cohere API key, which you can get [here](https://cohere.com/) and add to your .env file as `COHERE_API_KEY=`
 ```bash
 noted insights --help
 ```
