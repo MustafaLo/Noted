@@ -53,10 +53,3 @@ dockers:
     goarch: arm64
 
 
-changelog:
-  sort: asc
-  filters:
-    exclude:
-      - "^docs:"
-      - "^test:"
-
