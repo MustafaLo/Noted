@@ -123,11 +123,12 @@ Quickly view all your notes in one place. The list command lets you browse your 
 ```bash
 noted list --help
 ```
-
+v
 #### `insights`
 This feature leverages Cohere's powerful AI to analyze your notes and provide personalized insights and summaries. 
 > [!NOTE]
 > To use this command, you'll need a free Cohere API key, which you can get [here](https://cohere.com/)
+> Make sure to add to your env file as `COHERE_API_KEY `
 ```bash
 noted insights --help
 ```
