@@ -16,12 +16,15 @@
 
 <!-- TAGS -->
 <div align="center">
+
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/MustafaLo/noted/release.yml)
 ![Docker Pulls](https://img.shields.io/docker/pulls/mustafalo/noted)
-![Go](https://img.shields.io/badge/Go-00ADD8?logo=go&logoColor=white)
 ![Homebrew](https://img.shields.io/badge/homebrew-mustafalo%2Fnoted-blue?logo=homebrew)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Go](https://img.shields.io/badge/Go-00ADD8?logo=go&logoColor=white)
+
 </div>
+
 
 
 <!-- ABOUT THE PROJECT -->
