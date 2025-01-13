@@ -107,7 +107,7 @@ noted insights --help
 ```
 ## Roadmap
 Here are some future goals for Noted:
-[x] Support for syncing notes with Notion
+- [x] Support for syncing notes with Notion
 
 ## License
 This project is distributed under the MIT License
