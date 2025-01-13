@@ -60,7 +60,3 @@ changelog:
       - "^docs:"
       - "^test:"
 
-release:
-  footer: >-
-    ---
-    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
