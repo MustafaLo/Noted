@@ -1,5 +1,20 @@
 <a id="readme-top"></a>
 
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/MustafaLo/noted">
+    <img src="images/logo.png" alt="Logo" width="200" height="160">
+  </a>
+
+  <h3 align="center">Noted</h3>
+
+  <p align="center">
+    A Notion-integrated CLI for effortless, in-context educational notes during development.
+  </p>
+</div>
+
+
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 Noted is a native CLI tool that integrates with Notion to provide a way for developers to write in-context, educational 
@@ -108,6 +123,12 @@ noted insights --help
 ## Roadmap
 Here are some future goals for Noted:
 - [x] Support for syncing notes with Notion
+- [x] AI-powered insights and summaries with Cohere
+- [ ] Cross-platform support for additional IDEs beyond VSCode
+- [ ] Collaborative note-sharing between team members
+- [ ] Enhanced search functionality for notes within Notion
+
+Feel free to submit a suggestion by opening an issue in the [issues section](https://github.com/MustafaLo/noted/issues).
 
 ## License
 This project is distributed under the MIT License
