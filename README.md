@@ -38,8 +38,6 @@ Here are some features:
 * Automatically update existing Notion entries for evolving insights.
 * Generate AI-powered summarizations of your knowledge base
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -143,3 +141,6 @@ Feel free to submit a suggestion by opening an issue in the [issues section](htt
 
 ## License
 This project is distributed under the MIT License
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
